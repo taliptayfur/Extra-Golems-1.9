@@ -57,6 +57,12 @@ public class EntityLeafGolem extends GolemColorized
 			// System.out.print("color is " + color + "\n");
 			this.setColor(color);
 		}
+		
+		// slow falling for this entity
+		if(this.motionY < -0.1D)
+		{
+			this.motionY *= 4.0D / 5.0D;
+		}
 	}
 	
 	@Override

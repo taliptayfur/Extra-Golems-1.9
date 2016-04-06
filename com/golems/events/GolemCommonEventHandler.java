@@ -3,6 +3,7 @@ package com.golems.events;
 import com.golems.entity.EntityBookshelfGolem;
 import com.golems.entity.EntityClayGolem;
 import com.golems.entity.EntityCoalGolem;
+import com.golems.entity.EntityCraftingGolem;
 import com.golems.entity.EntityDiamondGolem;
 import com.golems.entity.EntityEmeraldGolem;
 import com.golems.entity.EntityEndstoneGolem;
@@ -34,6 +35,7 @@ import com.golems.entity.EntityWoolGolem;
 import com.golems.main.Config;
 
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockWorkbench;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -169,6 +171,10 @@ public class GolemCommonEventHandler
 			else if(event.blockBelow == Blocks.stained_glass)
 			{
 				event.setGolem(new EntityStainedGlassGolem(event.worldObj), Config.ALLOW_STAINED_GLASS_GOLEM);
+			}
+			else if(event.blockBelow instanceof BlockWorkbench)
+			{
+				event.setGolem(new EntityCraftingGolem(event.worldObj), Config.ALLOW_CRAFTING_GOLEM);
 			}
 		}
 	}

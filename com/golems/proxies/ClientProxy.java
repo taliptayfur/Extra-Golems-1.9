@@ -4,6 +4,7 @@ import com.golems.entity.EntityBedrockGolem;
 import com.golems.entity.EntityBookshelfGolem;
 import com.golems.entity.EntityClayGolem;
 import com.golems.entity.EntityCoalGolem;
+import com.golems.entity.EntityCraftingGolem;
 import com.golems.entity.EntityDiamondGolem;
 import com.golems.entity.EntityEmeraldGolem;
 import com.golems.entity.EntityEndstoneGolem;
@@ -83,6 +84,7 @@ public class ClientProxy extends CommonProxy
 		register(EntityBookshelfGolem.class);
 		register(EntityClayGolem.class);
 		register(EntityCoalGolem.class);
+		register(EntityCraftingGolem.class);
 		register(EntityDiamondGolem.class);
 		register(EntityEmeraldGolem.class);
 		register(EntityEndstoneGolem.class);

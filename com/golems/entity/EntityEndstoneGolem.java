@@ -6,7 +6,6 @@ import java.util.Random;
 import com.golems.main.Config;
 import com.golems.main.ContentInit;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -16,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumParticleTypes;
@@ -41,7 +41,7 @@ public class EntityEndstoneGolem extends GolemBase
 	/** Default constructor **/
 	public EntityEndstoneGolem(World world) 
 	{
-		this(world, 8.0F, Blocks.end_stone, 32.0D, Config.ALLOW_ENDSTONE_SPECIAL, true);
+		this(world, 8.0F, new ItemStack(Blocks.end_stone), 32.0D, Config.ALLOW_ENDSTONE_SPECIAL, true);
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class EntityEndstoneGolem extends GolemBase
 	 * @param teleportingAllowed usually set by the config, checked here
 	 * @param ambientParticles whether always to display "portal" particles 
 	 **/
-	public EntityEndstoneGolem(World world, float attack, Block pick, double teleportRange, boolean teleportingAllowed, boolean ambientParticles)
+	public EntityEndstoneGolem(World world, float attack, ItemStack pick, double teleportRange, boolean teleportingAllowed, boolean ambientParticles)
 	{
 		super(world, attack, pick);
 		this.ticksBetweenIdleTeleports = 200;
@@ -75,7 +75,7 @@ public class EntityEndstoneGolem extends GolemBase
 	 **/
 	public EntityEndstoneGolem(World world, float attack, double teleportRange, boolean teleportingAllowed, boolean ambientParticles) 
 	{
-		this(world, attack, ContentInit.golemHead, teleportRange, teleportingAllowed, ambientParticles);
+		this(world, attack, new ItemStack(ContentInit.golemHead, 1), teleportRange, teleportingAllowed, ambientParticles);
 	}
 	
 	@Override
@@ -183,21 +183,22 @@ public class EntityEndstoneGolem extends GolemBase
         double d2 = this.posZ + (this.rand.nextDouble() - 0.5D) * range;
         return this.teleportTo(d0, d1, d2);
     }
-
+	
 	@Override
-	public void onLivingUpdate()
+	public void updateAITasks()
 	{
-	    super.onLivingUpdate();
-
-	    if (this.worldObj.isRemote)
+		super.updateAITasks();
+		
+		if(Config.ALLOW_ENDSTONE_WATER_HURT && this.isWet())
         {
-            for (int i = 0; this.hasAmbientParticles && i < 2; ++i)
+            this.attackEntityFrom(DamageSource.drown, 1.0F);
+            for(int i = 0; i < 16; ++i)
             {
-                this.worldObj.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, new int[0]);
+            	if(this.teleportRandomly()) break;
             }
         }
-	    
-	    if (this.getAITarget() != null)
+		
+		if (this.getAITarget() != null)
         {
             this.faceEntity(this.getAITarget(), 100.0F, 100.0F);
             if(rand.nextInt(5) == 0)
@@ -209,6 +210,20 @@ public class EntityEndstoneGolem extends GolemBase
 	    {
 	    	this.teleportRandomly();
 	    }
+		
+		
+	}
+
+	@Override
+	public void onLivingUpdate()
+	{  
+	    if (this.worldObj.isRemote)
+        {
+            for (int i = 0; this.hasAmbientParticles && i < 2; ++i)
+            {
+                this.worldObj.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D, new int[0]);
+            }
+        }
 	    
 	    if (!this.worldObj.isRemote && this.isEntityAlive())
         {
@@ -233,7 +248,9 @@ public class EntityEndstoneGolem extends GolemBase
                 this.teleportDelay = 0;
             }
         }
-	   	
+	    
+	    this.isJumping = false;
+	    super.onLivingUpdate();	   	
 	}
 	
 	@Override

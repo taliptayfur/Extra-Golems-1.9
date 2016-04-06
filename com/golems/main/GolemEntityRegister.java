@@ -4,6 +4,7 @@ import com.golems.entity.EntityBedrockGolem;
 import com.golems.entity.EntityBookshelfGolem;
 import com.golems.entity.EntityClayGolem;
 import com.golems.entity.EntityCoalGolem;
+import com.golems.entity.EntityCraftingGolem;
 import com.golems.entity.EntityDiamondGolem;
 import com.golems.entity.EntityEmeraldGolem;
 import com.golems.entity.EntityEndstoneGolem;
@@ -50,6 +51,7 @@ public class GolemEntityRegister
 		register(EntityBookshelfGolem.class, "golem_bookshelf");
 		register(EntityClayGolem.class, "golem_clay");
 		register(EntityCoalGolem.class, "golem_coal");
+		register(EntityCraftingGolem.class, "golem_crafting");
 		register(EntityDiamondGolem.class, "golem_diamond");
 		register(EntityEmeraldGolem.class, "golem_emerald");
 		register(EntityEndstoneGolem.class, "golem_end_stone");

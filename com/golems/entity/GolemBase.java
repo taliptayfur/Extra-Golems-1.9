@@ -15,10 +15,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIDefendVillage;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookAtVillager;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
@@ -55,17 +54,19 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	protected int attackTimer;
 	protected boolean isPlayerCreated;
 	protected ResourceLocation textureLoc;
-	protected float attackDamage = 7;
 	protected boolean hasHome = false;
-	protected boolean takesFallDamage = false;
-	protected Block creativeReturn;
+	protected ItemStack creativeReturn;
 	Village villageObj;
 	/** deincrements, and a distance-to-home check is done at 0 */
 	private int homeCheckTimer = 70;
+	private boolean takesFallDamage = false;
+	
+	// customizable variables with default values //
+	protected double knockbackY = 0.4000000059604645D;
 	
 	/////////////// CONSTRUCTORS /////////////////
 
-	/* This is private to make sure child classes use other constructors */
+	/* Private to force child classes to use other constructors */
 	private GolemBase(World world) 
 	{
 		super(world);
@@ -75,12 +76,17 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 		((PathNavigateGround)this.getNavigator()).setCanSwim(false);
 	}
 
-	public GolemBase(World world, float attack, Block pickBlock)
+	public GolemBase(World world, float attack, ItemStack pickBlock)
 	{
 		this(world);
 		this.setCreativeReturn(pickBlock);
-		this.attackDamage = attack;
-		this.experienceValue = 4 + rand.nextInt((int)this.attackDamage + 2);
+		this.setBaseAttackDamage(attack);
+		this.experienceValue = 4 + rand.nextInt((int)this.getBaseAttackDamage() + 2);
+	}
+	
+	public GolemBase(World world, float attack, Block pickBlock)
+	{
+		this(world, attack, new ItemStack(pickBlock, 1, 0));
 	}
 
 	public GolemBase(World world, float attack)
@@ -104,9 +110,9 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityLiving.class, 10, false, true, new Predicate<EntityLiving>()
         {
-            public boolean apply(EntityLiving p_apply_1_)
+            public boolean apply(EntityLiving e)
             {
-                return p_apply_1_ != null && IMob.VISIBLE_MOB_SELECTOR.apply(p_apply_1_) && !(p_apply_1_ instanceof EntityCreeper);
+                return e != null && IMob.VISIBLE_MOB_SELECTOR.apply(e) && !(e instanceof EntityCreeper);
             }
         }));
 	}
@@ -122,6 +128,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	protected void applyEntityAttributes() 
 	{
 		super.applyEntityAttributes();
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7);
 		this.applyAttributes();
 	}
 
@@ -216,18 +223,19 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	public boolean attackEntityAsMob(Entity entity)
 	{
 		if(!(entity instanceof EntityLivingBase)) return super.attackEntityAsMob(entity);
+			
+		// (0.0 ~ 1.0] lower number results in less variance
+		final float VARIANCE = 0.8F; 
+		// calculate damage based on base attack damage and variance
+		float baseAttack = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+		float damage = baseAttack + (float)(rand.nextDouble() - 0.5D) * VARIANCE * baseAttack;
 		
 		// calculate luck and unluck to possibly increase damage
 		int myLuck = this.getActivePotionEffect(MobEffects.luck) != null ? 10 : 0;
 		int myUnluck = this.getActivePotionEffect(MobEffects.unluck) != null ? 10 : 0;
 		int unluck = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.unluck) != null ? 10 : 0;
-		
 		// percent chance of multiplying damage
 		final float CRITICAL_CHANCE = 5 + myLuck + unluck - myUnluck; 
-		// (0.0 ~ 1.0] lower number results in less variance
-		final float VARIANCE = 0.8F; 
-		// calculate damage based on base attack damage and variance
-		float damage = this.getAttackDamage() + (float)(rand.nextDouble() - 0.5D) * VARIANCE * this.getAttackDamage();
 		// try to increase damage if random critical chance succeeds
 		if(rand.nextInt(100) < CRITICAL_CHANCE)
 		{
@@ -240,7 +248,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 
 		if (flag)
 		{
-			entity.motionY += 0.4000000059604645D;
+			entity.motionY += knockbackY;
 			// debug:
 			//System.out.print("[Extra Golems] Base damage = " + this.getAttackDamage() + "; damage = " + damage + "\n");
 		}
@@ -318,7 +326,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	@Override
 	public ItemStack getPickedResult(RayTraceResult target)
 	{
-		return new ItemStack(Item.getItemFromBlock(this.creativeReturn), 1);
+		return this.creativeReturn;
 	}
 
 	/**
@@ -408,23 +416,28 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 
 	public void setCreativeReturn(Block blockToReturn)
 	{
+		this.setCreativeReturn(new ItemStack(blockToReturn, 1));
+	}
+	
+	public void setCreativeReturn(ItemStack blockToReturn)
+	{
 		this.creativeReturn = blockToReturn;
 	}
 
-	public Block getCreativeReturn()
+	public ItemStack getCreativeReturn()
 	{
 		return this.creativeReturn;
 	}
 
 	/** Sets the attack damage this golem has **/
-	private void setAttackDamage(float f)
+	private void setBaseAttackDamage(float f)
 	{
-		this.attackDamage = f;
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(f);
 	}
 
-	public float getAttackDamage()
+	public float getBaseAttackDamage()
 	{
-		return this.attackDamage;
+		return (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue();
 	}
 
 	public Village getVillage() 

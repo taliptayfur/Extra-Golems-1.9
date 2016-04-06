@@ -2,7 +2,7 @@ package com.golems.entity;
 
 import java.util.List;
 
-import com.golems.entity.ai.EntityAIPlantFlowers;
+import com.golems.entity.ai.EntityAIPlaceRandomBlocks;
 import com.golems.main.Config;
 import com.golems.main.ExtraGolems;
 
@@ -27,7 +27,7 @@ public class EntityMushroomGolem extends GolemMultiTextured
 	{
 		super(world, 3.0F, Blocks.red_mushroom_block, shroomTypes);
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIPlantFlowers(this, Config.TWEAK_MUSHROOM, mushrooms, soils, Config.ALLOW_MUSHROOM_SPECIAL));
+		this.tasks.addTask(2, new EntityAIPlaceRandomBlocks(this, Config.TWEAK_MUSHROOM, mushrooms, soils, Config.ALLOW_MUSHROOM_SPECIAL));
 	}	
 
 	@Override

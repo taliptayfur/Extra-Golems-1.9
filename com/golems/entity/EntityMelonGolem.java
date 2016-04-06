@@ -3,7 +3,7 @@ package com.golems.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.golems.entity.ai.EntityAIPlantFlowers;
+import com.golems.entity.ai.EntityAIPlaceRandomBlocks;
 import com.golems.main.Config;
 
 import net.minecraft.block.Block;
@@ -22,17 +22,12 @@ import net.minecraft.world.World;
 public class EntityMelonGolem extends GolemBase 
 {	
 	private IBlockState[] flowers;
-	private final Block[] soils = {Blocks.dirt, Blocks.grass, Blocks.mycelium};
+	private final Block[] soils = {Blocks.dirt, Blocks.grass, Blocks.mycelium, Blocks.farmland};
 	
 	public EntityMelonGolem(World world) 
 	{
 		super(world, 1.5F, Blocks.melon_block);	
-	}
-	
-	@Override
-	protected void initEntityAI()
-	{
-		super.initEntityAI();
+		
 		List<IBlockState> lFlowers = new ArrayList();
 		for(EnumFlowerType e : BlockFlower.EnumFlowerType.values())
 		{
@@ -43,8 +38,13 @@ public class EntityMelonGolem extends GolemBase
 			lFlowers.add(Blocks.tallgrass.getStateFromMeta(j));
 		}
 		this.flowers = lFlowers.toArray(new IBlockState[lFlowers.size()]);
-			
-		this.tasks.addTask(2, new EntityAIPlantFlowers(this, Config.TWEAK_MELON, flowers, soils, Config.ALLOW_MELON_SPECIAL));
+		this.tasks.addTask(2, new EntityAIPlaceRandomBlocks(this, Config.TWEAK_MELON, flowers, soils, Config.ALLOW_MELON_SPECIAL));
+	}
+	
+	@Override
+	protected void initEntityAI()
+	{
+		super.initEntityAI();	
 	}
 
 	@Override

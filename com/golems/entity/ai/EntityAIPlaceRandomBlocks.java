@@ -10,15 +10,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityAIPlantFlowers extends EntityAIBase
+public class EntityAIPlaceRandomBlocks extends EntityAIBase
 {
-	private final GolemBase theGolem;
-	private final int tickDelay;
-	private final IBlockState[] plantables;
-	private final Block[] plantSupports;
-	private final boolean canExecute;
+	public final GolemBase theGolem;
+	public final int tickDelay;
+	public final IBlockState[] plantables;
+	public final Block[] plantSupports;
+	public final boolean canExecute;
 	
-	public EntityAIPlantFlowers(GolemBase golem, int ticksBetweenPlanting, IBlockState[] plants, Block[] soils, boolean configAllows)
+	public EntityAIPlaceRandomBlocks(GolemBase golem, int ticksBetweenPlanting, IBlockState[] plants, Block[] soils, boolean configAllows)
 	{
 		this.setMutexBits(8);
 		this.theGolem = golem;
@@ -43,14 +43,14 @@ public class EntityAIPlantFlowers extends EntityAIBase
 		BlockPos below = new BlockPos(x, y, z);
 		Block blockBelow = theGolem.worldObj.getBlockState(below).getBlock();
 
-		if(theGolem.worldObj.isAirBlock(below.up(1)))
+		if(theGolem.worldObj.isAirBlock(below.up(1)) && this.plantSupports != null && this.plantSupports.length > 0)
 		{
 			for(Block b : this.plantSupports)
 			{
 				if(blockBelow == b)
 				{
 					// debug:
-					System.out.println("Planting a flower!");
+					// System.out.println("Planting a flower!");
 					setToPlant(theGolem.worldObj, below.up(1));
 					return;
 				}

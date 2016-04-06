@@ -25,7 +25,7 @@ public class EntityRedstoneGolem extends GolemBase
 	
 	public EntityRedstoneGolem(World world) 
 	{
-		this(world, 2.0F, Blocks.redstone_block, 15, Config.ALLOW_REDSTONE_SPECIAL);
+		this(world, 2.0F, Blocks.redstone_block, Config.TWEAK_REDSTONE, Config.ALLOW_REDSTONE_SPECIAL);
 	}
 	
 	public EntityRedstoneGolem(World world, float attack, Block pick, int power, final boolean CONFIG_ALLOWS_POWERING) 

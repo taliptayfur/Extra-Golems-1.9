@@ -9,6 +9,7 @@ public class Config
 	public static boolean ALLOW_BOOKSHELF_GOLEM;
 	public static boolean ALLOW_CLAY_GOLEM;
 	public static boolean ALLOW_COAL_GOLEM;
+	public static boolean ALLOW_CRAFTING_GOLEM;
 	public static boolean ALLOW_DIAMOND_GOLEM;
 	public static boolean ALLOW_EMERALD_GOLEM;
 	public static boolean ALLOW_ENDSTONE_GOLEM;
@@ -54,6 +55,7 @@ public class Config
 	public static boolean ALLOW_TNT_SPECIAL;
 	
 	public static boolean ALLOW_SPONGE_PARTICLES;
+	public static boolean ALLOW_ENDSTONE_WATER_HURT;
 	public static int TWEAK_MELON;
 	public static int TWEAK_MUSHROOM;
 	public static int TWEAK_NETHERBRICK;
@@ -113,6 +115,8 @@ public class Config
 				"Whether the Clay Golem can be built.");
 		ALLOW_COAL_GOLEM = config.getBoolean("Allow Coal Golem", CATEGORY_SPAWNS, true,
 				"Whether the Coal Golem can be built.");
+		ALLOW_CRAFTING_GOLEM = config.getBoolean("Allow Crafting Golem", CATEGORY_SPAWNS, true,
+				"Whether the Crafting Table Golem can be built.");
 		ALLOW_DIAMOND_GOLEM = config.getBoolean("Allow Diamond Golem", CATEGORY_SPAWNS, true,
 				"Whether the Diamond Golem can be built.");
 		ALLOW_EMERALD_GOLEM = config.getBoolean("Allow Emerald Golem", CATEGORY_SPAWNS, true,
@@ -176,6 +180,8 @@ public class Config
 		
 		ALLOW_SPONGE_PARTICLES = config.getBoolean("Allow Sponge Golem Particles", CATEGORY_SPAWNS, true,
 				"Whether the Sponge Golem should have 'water drip' particles");
+		ALLOW_ENDSTONE_WATER_HURT = config.getBoolean("Allow Water Hurt", CATEGORY_SPAWNS, true,
+				"Whether the Endstone Golem takes damage from water");
 		TWEAK_MELON = config.getInt("Melon Golem Interval", CATEGORY_TWEAKS, 240, 1, 24000, 
 				"Average number of ticks between planting flowers");
 		TWEAK_MUSHROOM = config.getInt("Mushroom Golem Interval", CATEGORY_TWEAKS, 420, 1, 24000, 
