@@ -15,7 +15,7 @@ public class EntitySeaLanternGolem extends GolemLightProvider
 {			
 	public EntitySeaLanternGolem(World world) 
 	{
-		super(world, 4.0F, Blocks.sea_lantern, EnumLightLevel.FULL);
+		super(world, 4.0F, Blocks.sea_lantern, EnumLightLevel.WATER_FULL);
 		this.tickDelay = 1;
 	}
 	
@@ -36,8 +36,8 @@ public class EntitySeaLanternGolem extends GolemLightProvider
 	{
 		int size = 1 + this.rand.nextInt(2 + lootingLevel);
 		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.sea_lantern, size > 4 ? 4 : size));
-		GolemBase.addDropEntry(dropList, Items.prismarine_shard, 0, 1, 3, 6 + lootingLevel * 5);
-		GolemBase.addDropEntry(dropList, Items.prismarine_crystals, 0, 1, 3, 6 + lootingLevel * 5);
+		GolemBase.addDropEntry(dropList, Items.prismarine_shard, 0, 1, 3, 4 + lootingLevel * 5);
+		GolemBase.addDropEntry(dropList, Items.prismarine_crystals, 0, 1, 3, 4 + lootingLevel * 5);
 	}
  
 	@Override

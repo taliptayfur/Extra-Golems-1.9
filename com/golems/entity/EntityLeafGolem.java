@@ -25,7 +25,7 @@ public class EntityLeafGolem extends GolemColorized
 
 	public EntityLeafGolem(World world)
 	{
-		super(world, 0.5F, Blocks.leaves, 0x5F904A, TEXTURE_BASE, TEXTURE_OVERLAY);
+		super(world, 0.5F, new ItemStack(Blocks.leaves), 0x5F904A, TEXTURE_BASE, TEXTURE_OVERLAY);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 	}
 	

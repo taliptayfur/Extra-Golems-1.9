@@ -19,21 +19,16 @@ import net.minecraft.world.World;
 
 public class EntityMushroomGolem extends GolemMultiTextured
 {			
-	private static final String[] shroomTypes = {"red","brown"};
-	private final IBlockState[] mushrooms = {Blocks.brown_mushroom.getDefaultState(), Blocks.red_mushroom.getDefaultState()};
-	private final Block[] soils = {Blocks.dirt, Blocks.grass, Blocks.mycelium};
+	public static final String shroomPrefix = "shroom";
+	public static final String[] shroomTypes = {"red","brown"};
+	public final IBlockState[] mushrooms = {Blocks.brown_mushroom.getDefaultState(), Blocks.red_mushroom.getDefaultState()};
+	public final Block[] soils = {Blocks.dirt, Blocks.grass, Blocks.mycelium};
 
 	public EntityMushroomGolem(World world) 
 	{
-		super(world, 3.0F, Blocks.red_mushroom_block, shroomTypes);
+		super(world, 3.0F, Blocks.red_mushroom_block, shroomPrefix, shroomTypes);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIPlaceRandomBlocks(this, Config.TWEAK_MUSHROOM, mushrooms, soils, Config.ALLOW_MUSHROOM_SPECIAL));
-	}	
-
-	@Override
-	public String getTexturePrefix() 
-	{
-		return "shroom";
 	}
 	
 	@Override

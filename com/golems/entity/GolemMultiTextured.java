@@ -22,21 +22,38 @@ public abstract class GolemMultiTextured extends GolemBase
 	
 	/** {@code textures} cannot exceed 256 in length **/
 	private final String[] textures;
+	private final String texturePrefix;
 	
-	public GolemMultiTextured(World world, float attack, Block pick, String[] textureNames)
+	/**
+	 * This is a base class for golems that change texture when player interacts.
+	 * @param prefix example: "wooden" will initialize textures 
+	 * {@code 'golem_wooden_textureNames[i]'} for every value in {@code textureNames}
+	 * @param textureNames example:  {"red", "blue"} will initialize textures named
+	 * {@code 'golem_x_red'} and {@code 'golem_x_blue'} if {@code prefix} is "x"
+	 **/
+	public GolemMultiTextured(World world, float attack, ItemStack pick, String prefix, String[] textureNames)
 	{
 		super(world, attack, pick);
 		this.textures = textureNames;
+		this.texturePrefix = prefix;
 	}
 	
-	public GolemMultiTextured(World world, float attack, String[] textureNames) 
+	/**
+	 * This is a base class for golems that change texture when player interacts.
+	 * @param prefix example: "wooden" will initialize textures 
+	 * {@code 'golem_wooden_textureNames[i]'} for every value in {@code textureNames}
+	 * @param textureNames example:  {"red", "blue"} will initialize textures named
+	 * {@code 'golem_x_red'} and {@code 'golem_x_blue'} if {@code prefix} is "x"
+	 **/
+	public GolemMultiTextured(World world, float attack, Block pick, String prefix, String[] textureNames) 
 	{
-		this(world, attack, ContentInit.golemHead, textureNames);		
+		this(world, attack, new ItemStack(pick), prefix, textureNames);		
 	}
 	
 	@Override
 	protected void applyTexture()
 	{
+		// apply TEMPORARY texture to avoid NPE. Actual texture is first applied in onLivingUpdate
 		this.setTextureType(this.getGolemTexture("clay"));
 	}
 	
@@ -110,10 +127,15 @@ public abstract class GolemMultiTextured extends GolemBase
 	{
 		this.getDataManager().set(DATA_TEXTURE, new Byte(toSet));
 	}
+	
+	public byte getTextureByte()
+	{
+		return this.getDataManager().get(DATA_TEXTURE);
+	}
 
 	public int getTextureNum() 
 	{
-		return (int)this.getDataManager().get(DATA_TEXTURE);
+		return (int)this.getTextureByte();
 	}
 	
 	/** Call getGolemTexture with specialized name concatenation **/
@@ -133,7 +155,10 @@ public abstract class GolemMultiTextured extends GolemBase
 		return this.textures[this.getTextureNum()];
 	}
 	
-	public abstract String getTexturePrefix();
+	public String getTexturePrefix()
+	{
+		return this.texturePrefix;
+	}
 	
 	public abstract String getModId();
 }

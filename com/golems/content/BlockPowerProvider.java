@@ -38,7 +38,7 @@ public class BlockPowerProvider extends BlockLightProvider
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(POWER);
+        return ((Integer)state.getValue(POWER)).intValue();
     }
 
     @Override

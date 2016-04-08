@@ -57,9 +57,9 @@ public abstract class GolemLightProvider extends GolemBase
 				BlockPos pos = new BlockPos(xPos, yPos, zPos);
 				IBlockState state = this.worldObj.getBlockState(pos);
 				Block at = state.getBlock();
-				if(state.getMaterial() == this.lightLevel.getMaterialToReplace())
+				if(this.worldObj.isAirBlock(pos) || state.getMaterial() == this.lightLevel.getMaterialToReplace())
 				{
-					return this.worldObj.setBlockState(pos, this.lightLevel.getLightBlock().getDefaultState());
+					return this.worldObj.setBlockState(pos, this.lightLevel.getLightBlock().getDefaultState(), 2);
 				}
 				else if(at instanceof BlockLightProvider)
 				{

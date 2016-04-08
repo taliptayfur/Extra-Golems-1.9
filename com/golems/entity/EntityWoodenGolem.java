@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.golems.main.ExtraGolems;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.init.Blocks;
@@ -18,19 +19,28 @@ import net.minecraft.world.World;
 
 public class EntityWoodenGolem extends GolemMultiTextured
 {			
+	public static final String woodPrefix = "wooden";
 	private static final String[] woodTypes = {"oak","spruce","birch","jungle","acacia","big_oak"};
 
 	public EntityWoodenGolem(World world) 
 	{
-		super(world, 3.0F, Blocks.log, woodTypes);
+		super(world, 3.0F, new ItemStack(Blocks.log), woodPrefix, woodTypes);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		((PathNavigateGround)this.getNavigator()).setCanSwim(true);
 	}	
-
+	
 	@Override
-	public String getTexturePrefix() 
+	public ItemStack getCreativeReturn()
 	{
-		return "wooden";
+		// try to return the same block of this golem's texture
+		Block block = Blocks.log;
+		int damage = this.getTextureNum() % woodTypes.length;
+		if(this.getTextureNum() > 3)
+		{
+			block = Blocks.log2;
+			damage %= 2;
+		}
+		return new ItemStack(block, 1, damage);
 	}
 	
 	@Override
@@ -50,7 +60,7 @@ public class EntityWoodenGolem extends GolemMultiTextured
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 6 + this.rand.nextInt(4 + lootingLevel * 4);
-		int meta = rand.nextBoolean() ? this.getTextureNum() : 0;
+		int meta = this.getTextureNum() % woodTypes.length;
 		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Item.getItemFromBlock(Blocks.planks), size > 16 ? 16 : size, meta));
 		GolemBase.addDropEntry(dropList, Items.stick, 0, 1, 4, 10 + lootingLevel * 4);
 		GolemBase.addDropEntry(dropList, Blocks.sapling, 0, 1, 2, 4 + lootingLevel * 4);

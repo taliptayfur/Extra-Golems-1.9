@@ -12,16 +12,16 @@ import net.minecraft.world.World;
 
 public class EntityAIPlaceRandomBlocks extends EntityAIBase
 {
-	public final GolemBase theGolem;
+	public final GolemBase golem;
 	public final int tickDelay;
 	public final IBlockState[] plantables;
 	public final Block[] plantSupports;
 	public final boolean canExecute;
 	
-	public EntityAIPlaceRandomBlocks(GolemBase golem, int ticksBetweenPlanting, IBlockState[] plants, Block[] soils, boolean configAllows)
+	public EntityAIPlaceRandomBlocks(GolemBase golemBase, int ticksBetweenPlanting, IBlockState[] plants, Block[] soils, boolean configAllows)
 	{
 		this.setMutexBits(8);
-		this.theGolem = golem;
+		this.golem = golemBase;
 		this.tickDelay = ticksBetweenPlanting;
 		this.plantables = plants;
 		this.plantSupports = soils;
@@ -31,19 +31,19 @@ public class EntityAIPlaceRandomBlocks extends EntityAIBase
 	@Override
 	public boolean shouldExecute() 
 	{
-		return canExecute && theGolem.worldObj.rand.nextInt(tickDelay) == 0;
+		return canExecute && golem.worldObj.rand.nextInt(tickDelay) == 0;
 	}
 	
 	@Override
 	public void startExecuting()
 	{
-		int x = MathHelper.floor_double(theGolem.posX);
-		int y = MathHelper.floor_double(theGolem.posY - 0.20000000298023224D - (double)theGolem.getYOffset());
-		int z = MathHelper.floor_double(theGolem.posZ);
+		int x = MathHelper.floor_double(golem.posX);
+		int y = MathHelper.floor_double(golem.posY - 0.20000000298023224D - (double)golem.getYOffset());
+		int z = MathHelper.floor_double(golem.posZ);
 		BlockPos below = new BlockPos(x, y, z);
-		Block blockBelow = theGolem.worldObj.getBlockState(below).getBlock();
+		Block blockBelow = golem.worldObj.getBlockState(below).getBlock();
 
-		if(theGolem.worldObj.isAirBlock(below.up(1)) && this.plantSupports != null && this.plantSupports.length > 0)
+		if(golem.worldObj.isAirBlock(below.up(1)) && this.plantSupports != null && this.plantSupports.length > 0)
 		{
 			for(Block b : this.plantSupports)
 			{
@@ -51,7 +51,7 @@ public class EntityAIPlaceRandomBlocks extends EntityAIBase
 				{
 					// debug:
 					// System.out.println("Planting a flower!");
-					setToPlant(theGolem.worldObj, below.up(1));
+					setToPlant(golem.worldObj, below.up(1));
 					return;
 				}
 			}

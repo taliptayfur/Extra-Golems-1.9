@@ -26,10 +26,22 @@ public abstract class GolemColorizedMultiTextured extends GolemColorized
 	 * @param OVERLAY a texture that will be recolored and optionally rendered as transparent.
 	 * @param lColors an int[] of color values to use for rendering -- interacting with this golem will go to the next color
 	 **/
-	public GolemColorizedMultiTextured(World world, float damage, Block pick, final ResourceLocation BASE, final ResourceLocation OVERLAY, int[] lColors)
+	public GolemColorizedMultiTextured(World world, float damage, ItemStack pick, final ResourceLocation BASE, final ResourceLocation OVERLAY, int[] lColors)
 	{
 		super(world, damage, pick, 0L, BASE, OVERLAY);
 		colors = lColors;
+	}
+	
+	/**
+	 * Flexible constructor so child classes can "borrow" this class's behavior and customize.
+	 * It is fine to pass 'null' for {@link BASE} or {@link OVERLAY}, and null textures will not be rendered.
+	 * @param BASE an optional texture that will not be recolored or rendered transparent, to render before {@link OVERLAY}
+	 * @param OVERLAY a texture that will be recolored and optionally rendered as transparent.
+	 * @param lColors an int[] of color values to use for rendering -- interacting with this golem will go to the next color
+	 **/
+	public GolemColorizedMultiTextured(World world, float damage, Block pick, final ResourceLocation BASE, final ResourceLocation OVERLAY, int[] lColors)
+	{
+		this(world, damage, new ItemStack(pick), BASE, OVERLAY, lColors);
 	}
 	
 	@Override

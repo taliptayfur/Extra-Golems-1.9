@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLightProvider extends Block implements ITileEntityProvider
 {
-	public static final AxisAlignedBB EMPTY_AABB = new AxisAlignedBB(0.5D, 0.5D, 0.5D, 0.5D, 0.5D, 0.5D);
+	public static final AxisAlignedBB SINGULAR_AABB = new AxisAlignedBB(0.5D, 0.5D, 0.5D, 0.5D, 0.5D, 0.5D);
 	
     public BlockLightProvider(float lightLevel)
     {
@@ -37,7 +37,7 @@ public class BlockLightProvider extends Block implements ITileEntityProvider
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return EMPTY_AABB;
+        return SINGULAR_AABB;
     }
     
     @Override

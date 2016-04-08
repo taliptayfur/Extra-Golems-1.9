@@ -2,20 +2,34 @@ package com.golems.entity;
 
 import com.golems.main.ContentInit;
 
-import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * This class should always be registered with RenderGolemColorized.
+ * It supports a 2-texture golem where {@link getTextureBase()} returns
+ * a normal texture to be rendered and {@link getTextureToColor()} returns
+ * a (usually grayscale) texture to be colored according to {@link getColor()}
+ **/
 public abstract class GolemColorized extends GolemBase
 {	
 	protected long color;
-	protected ResourceLocation base;
-	protected ResourceLocation overlay;
+	protected final ResourceLocation base;
+	protected final ResourceLocation overlay;
 	protected boolean hasBase;
 	
-	public GolemColorized(World world, float attack, Block pickBlock, long initial, ResourceLocation rBase, ResourceLocation rOverlay)
+	/**
+	 * Flexible constructor so child classes can "borrow" this class's behavior and customize.
+	 * It is fine to pass 'null' for {@link rBase} or {@link rOverlay}, and null textures will not be rendered.
+	 * Args: world, attack, pickBlock, initialColor, rBase, rOverlay.
+	 * @param initial the (usually temporary) color to apply to this golem until it is updated by some other method.
+	 * @param rBase an optional texture that will not be recolored or rendered transparent, to render before {@link OVERLAY}
+	 * @param rOverlay a texture that will be recolored and optionally rendered as transparent.
+	 **/
+	public GolemColorized(World world, float attack, ItemStack pickBlock, long initial, final ResourceLocation rBase, final ResourceLocation rOverlay)
 	{
 		super(world, attack, pickBlock);
 		this.color = initial;
@@ -24,9 +38,17 @@ public abstract class GolemColorized extends GolemBase
 		this.hasBase = this.base != null;
 	}
 	
+	/**
+	 * Flexible constructor so child classes can "borrow" this class's behavior and customize.
+	 * It is fine to pass 'null' for {@link rBase} or {@link rOverlay}, and null textures will not be rendered.
+	 * Args: world, attack, initialColor, rBase, rOverlay.
+	 * @param initial the (usually temporary) color to apply to this golem until it is updated by some other method.
+	 * @param rBase an optional texture that will not be recolored or rendered transparent, to render before {@link OVERLAY}
+	 * @param rOverlay a texture that will be recolored and optionally rendered as transparent.
+	 **/
 	public GolemColorized(World world, float attack, long initial, ResourceLocation rBase, ResourceLocation rOverlay) 
 	{
-		this(world, attack, ContentInit.golemHead, initial, rBase, rOverlay);
+		this(world, attack, new ItemStack(ContentInit.golemHead), initial, rBase, rOverlay);
 	}
 	
 	@Override

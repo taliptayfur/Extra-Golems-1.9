@@ -48,7 +48,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-
+/**
+ * Base class for all golems in this mod.
+ **/
 public abstract class GolemBase extends EntityCreature implements IAnimals 
 {
 	protected int attackTimer;
@@ -59,10 +61,11 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	Village villageObj;
 	/** deincrements, and a distance-to-home check is done at 0 */
 	private int homeCheckTimer = 70;
-	private boolean takesFallDamage = false;
 	
 	// customizable variables with default values //
 	protected double knockbackY = 0.4000000059604645D;
+	protected boolean takesFallDamage = false;
+	protected boolean isLeashable = true;
 	
 	/////////////// CONSTRUCTORS /////////////////
 
@@ -169,7 +172,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	@Override
 	public boolean canBeLeashedTo(EntityPlayer player)
     {
-        return super.canBeLeashedTo(player);
+        return this.isLeashable && super.canBeLeashedTo(player);
     }
 
 	@Override
@@ -230,10 +233,11 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 		float baseAttack = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		float damage = baseAttack + (float)(rand.nextDouble() - 0.5D) * VARIANCE * baseAttack;
 		
-		// calculate luck and unluck to possibly increase damage
+		// calculate luck and unluck to possibly increase or decrease damage
 		int myLuck = this.getActivePotionEffect(MobEffects.luck) != null ? 10 : 0;
 		int myUnluck = this.getActivePotionEffect(MobEffects.unluck) != null ? 10 : 0;
 		int unluck = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.unluck) != null ? 10 : 0;
+		
 		// percent chance of multiplying damage
 		final float CRITICAL_CHANCE = 5 + myLuck + unluck - myUnluck; 
 		// try to increase damage if random critical chance succeeds
