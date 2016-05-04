@@ -35,7 +35,7 @@ public class EntityGoldGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 6 + this.rand.nextInt(8 + lootingLevel * 4);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.gold_ingot, size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.gold_ingot, size));
 	}
 
 	@Override

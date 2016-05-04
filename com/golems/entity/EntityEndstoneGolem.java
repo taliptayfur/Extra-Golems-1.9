@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.golems.main.Config;
-import com.golems.main.ContentInit;
+import com.golems.main.GolemItems;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -75,7 +75,7 @@ public class EntityEndstoneGolem extends GolemBase
 	 **/
 	public EntityEndstoneGolem(World world, float attack, double teleportRange, boolean teleportingAllowed, boolean ambientParticles) 
 	{
-		this(world, attack, new ItemStack(ContentInit.golemHead, 1), teleportRange, teleportingAllowed, ambientParticles);
+		this(world, attack, new ItemStack(GolemItems.golemHead, 1), teleportRange, teleportingAllowed, ambientParticles);
 	}
 	
 	@Override
@@ -94,9 +94,9 @@ public class EntityEndstoneGolem extends GolemBase
 	@Override
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
-		GolemBase.addDropEntry(dropList, Blocks.end_stone, 0, 2, 2 + lootingLevel, 90);
-		GolemBase.addDropEntry(dropList, Items.ender_pearl, 0, 2, 4 + lootingLevel, 40);
-		GolemBase.addDropEntry(dropList, Items.ender_eye, 0, 1, 1 + lootingLevel, 6);
+		this.addDropEntry(dropList, Blocks.end_stone, 0, 2, 2 + lootingLevel, 90);
+		this.addDropEntry(dropList, Items.ender_pearl, 0, 2, 4 + lootingLevel, 40);
+		this.addDropEntry(dropList, Items.ender_eye, 0, 1, 1 + lootingLevel, 6);
 	}
 	
 	/**

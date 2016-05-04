@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.golems.entity.ai.EntityAIDefendAgainstMonsters;
-import com.golems.main.ContentInit;
+import com.golems.main.GolemItems;
 import com.golems.main.ExtraGolems;
 import com.google.common.base.Predicate;
 
@@ -94,7 +94,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 
 	public GolemBase(World world, float attack)
 	{
-		this(world, attack, ContentInit.golemHead);
+		this(world, attack, GolemItems.golemHead);
 	}
 
 	////////////// BEHAVIOR OVERRIDES //////////////////
@@ -102,11 +102,11 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	@Override
 	protected void initEntityAI()
 	{
-		this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, true));
-        this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.9D, 32.0F));
-        this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, 0.6D, true));
-        this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.6D));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, this.getBaseMoveSpeed() * 4.0D, true));
+        this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, this.getBaseMoveSpeed() * 3.75D, 32.0F));
+        this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, this.getBaseMoveSpeed() * 2.25D, true));
+        this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, this.getBaseMoveSpeed() * 4.0D));
+        this.tasks.addTask(5, new EntityAIWander(this, this.getBaseMoveSpeed() * 2.25D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIDefendAgainstMonsters(this));
@@ -176,14 +176,14 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
     }
 
 	@Override
-	protected void collideWithEntity(Entity entity)
+	protected void collideWithEntity(Entity entityIn)
 	{
-		if (entity instanceof IMob && this.getRNG().nextInt(10) == 0)
-		{
-			this.setAttackTarget((EntityLivingBase)entity);
-		}
+		if (entityIn instanceof IMob && !(entityIn instanceof EntityCreeper) && this.getRNG().nextInt(20) == 0)
+        {
+            this.setAttackTarget((EntityLivingBase)entityIn);
+        }
 
-		super.collideWithEntity(entity);
+		super.collideWithEntity(entityIn);
 	}
 
 	/**
@@ -217,10 +217,10 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	 * Returns true if this entity can attack entities of the specified class.
 	 */
 	@Override
-	public boolean canAttackClass(Class p_70686_1_)
-	{
-		return this.isPlayerCreated() && EntityPlayer.class.isAssignableFrom(p_70686_1_) ? false : super.canAttackClass(p_70686_1_);
-	}
+	public boolean canAttackClass(Class <? extends EntityLivingBase > cls)
+    {
+        return this.isPlayerCreated() && EntityPlayer.class.isAssignableFrom(cls) ? false : (cls == EntityCreeper.class ? false : super.canAttackClass(cls));
+    }
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity)
@@ -253,6 +253,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 		if (flag)
 		{
 			entity.motionY += knockbackY;
+			this.applyEnchantments(this, entity);
 			// debug:
 			//System.out.print("[Extra Golems] Base damage = " + this.getAttackDamage() + "; damage = " + damage + "\n");
 		}
@@ -377,22 +378,22 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 		}
 	}
 
-	public static boolean addGuaranteedDropEntry(List<WeightedRandomChestContent> list, ItemStack in)
+	protected boolean addGuaranteedDropEntry(List<WeightedRandomChestContent> list, ItemStack in)
 	{
 		return addDropEntry(list, in.getItem(), in.getItemDamage(), in.stackSize, in.stackSize, 100);
 	}
 
-	public static boolean addDropEntry(List<WeightedRandomChestContent> list, Block in, int meta, int minAmount, int maxAmount, int percentChance)
+	protected boolean addDropEntry(List<WeightedRandomChestContent> list, Block in, int meta, int minAmount, int maxAmount, int percentChance)
 	{
 		return addDropEntry(list, Item.getItemFromBlock(in), meta, minAmount, maxAmount, percentChance);
 	}
 
-	public static boolean addDropEntry(List<WeightedRandomChestContent> list, Item in, int meta, int minAmount, int maxAmount, int percentChance)
+	protected boolean addDropEntry(List<WeightedRandomChestContent> list, Item in, int meta, int minAmount, int maxAmount, int percentChance)
 	{
 		return list.add(new WeightedRandomChestContent(in, meta, minAmount, maxAmount, percentChance));
 	}
 
-	public static boolean removeDropEntry(List<WeightedRandomChestContent> list, Item in, int meta)
+	protected boolean removeDropEntry(List<WeightedRandomChestContent> list, Item in, int meta)
 	{
 		boolean flag = false;
 		for(WeightedRandomChestContent w : list)
@@ -442,6 +443,11 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	public float getBaseAttackDamage()
 	{
 		return (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue();
+	}
+	
+	public double getBaseMoveSpeed()
+	{
+		return this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
 	}
 
 	public Village getVillage() 

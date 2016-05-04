@@ -71,8 +71,8 @@ public class EntityCoalGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 8 + this.rand.nextInt(8 + lootingLevel * 2);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.coal, size));
-		GolemBase.addDropEntry(dropList, Items.coal, 1, 1, size / 4, 40);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.coal, size));
+		this.addDropEntry(dropList, Items.coal, 1, 1, size / 4, 40);
 	}
 
 	@Override

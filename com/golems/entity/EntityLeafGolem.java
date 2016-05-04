@@ -68,10 +68,10 @@ public class EntityLeafGolem extends GolemColorized
 	@Override
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.leaves, lootingLevel + 1));
-		GolemBase.addDropEntry(dropList, Blocks.sapling, 0, 1, 1, 20 + lootingLevel * 10);
-		GolemBase.addDropEntry(dropList, Items.apple, 0, 1, 1, 15 + lootingLevel * 10);
-		GolemBase.addDropEntry(dropList, Items.stick, 0, 1, 2, 5 + lootingLevel * 10);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.leaves, lootingLevel + 1));
+		this.addDropEntry(dropList, Blocks.sapling, 0, 1, 1, 20 + lootingLevel * 10);
+		this.addDropEntry(dropList, Items.apple, 0, 1, 1, 15 + lootingLevel * 10);
+		this.addDropEntry(dropList, Items.stick, 0, 1, 2, 5 + lootingLevel * 10);
 	}
 
 	@Override

@@ -59,8 +59,8 @@ public class EntityBookshelfGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 4 + this.rand.nextInt(6 + lootingLevel);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.book, size));
-		GolemBase.addDropEntry(dropList, Blocks.planks, 0, 3, 12, 75);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.book, size));
+		this.addDropEntry(dropList, Blocks.planks, 0, 3, 12, 75);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.golems.entity;
 
 import java.util.List;
 
-import com.golems.content.ContainerPortableWorkbench;
+import com.golems.blocks.ContainerPortableWorkbench;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,8 +55,8 @@ public class EntityCraftingGolem extends GolemBase
 	@Override
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel) 
 	{
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.crafting_table, 1 + rand.nextInt(2)));
-		GolemBase.addDropEntry(dropList, Blocks.planks, 0, 1, 6, 70 + lootingLevel * 10);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.crafting_table, 1 + rand.nextInt(2)));
+		this.addDropEntry(dropList, Blocks.planks, 0, 1, 6, 70 + lootingLevel * 10);
 	}
 
 	@Override

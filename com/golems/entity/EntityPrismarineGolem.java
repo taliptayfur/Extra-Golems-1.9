@@ -53,8 +53,8 @@ public class EntityPrismarineGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)	
 	{
 		int size = 6 + this.rand.nextInt(4 + lootingLevel * 2);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.prismarine_shard, size));
-		GolemBase.addDropEntry(dropList, Items.prismarine_crystals, 0, 1, 3, 6 + lootingLevel * 5);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.prismarine_shard, size));
+		this.addDropEntry(dropList, Items.prismarine_crystals, 0, 1, 3, 6 + lootingLevel * 5);
 	}
 
 	@Override

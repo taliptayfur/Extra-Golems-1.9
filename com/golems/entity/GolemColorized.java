@@ -1,6 +1,6 @@
 package com.golems.entity;
 
-import com.golems.main.ContentInit;
+import com.golems.main.GolemItems;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -48,7 +48,7 @@ public abstract class GolemColorized extends GolemBase
 	 **/
 	public GolemColorized(World world, float attack, long initial, ResourceLocation rBase, ResourceLocation rOverlay) 
 	{
-		this(world, attack, new ItemStack(ContentInit.golemHead), initial, rBase, rOverlay);
+		this(world, attack, new ItemStack(GolemItems.golemHead), initial, rBase, rOverlay);
 	}
 	
 	@Override

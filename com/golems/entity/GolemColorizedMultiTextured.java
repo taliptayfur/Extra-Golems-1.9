@@ -121,7 +121,12 @@ public abstract class GolemColorizedMultiTextured extends GolemColorized
 
 	public int getTextureNum() 
 	{
-		return (int)this.getDataManager().get(DATA_TEXTURE);
+		return this.getDataManager().get(DATA_TEXTURE).intValue();
+	}
+	
+	public int[] getColorArray()
+	{
+		return this.colors;
 	}
 	
 	protected void updateTextureByData(int data)

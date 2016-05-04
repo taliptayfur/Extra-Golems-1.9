@@ -35,9 +35,9 @@ public class EntitySeaLanternGolem extends GolemLightProvider
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)	
 	{
 		int size = 1 + this.rand.nextInt(2 + lootingLevel);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.sea_lantern, size > 4 ? 4 : size));
-		GolemBase.addDropEntry(dropList, Items.prismarine_shard, 0, 1, 3, 4 + lootingLevel * 5);
-		GolemBase.addDropEntry(dropList, Items.prismarine_crystals, 0, 1, 3, 4 + lootingLevel * 5);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.sea_lantern, size > 4 ? 4 : size));
+		this.addDropEntry(dropList, Items.prismarine_shard, 0, 1, 3, 4 + lootingLevel * 5);
+		this.addDropEntry(dropList, Items.prismarine_crystals, 0, 1, 3, 4 + lootingLevel * 5);
 	}
  
 	@Override

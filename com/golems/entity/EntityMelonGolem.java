@@ -64,9 +64,9 @@ public class EntityMelonGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 6 + this.rand.nextInt(6 + lootingLevel * 4);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.melon, size));
-		GolemBase.addDropEntry(dropList, Items.melon_seeds, 0, 1, 6 + lootingLevel, 20 + lootingLevel * 10);
-		GolemBase.addDropEntry(dropList, Items.speckled_melon, 0, 1, 1, 2 + lootingLevel * 10);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.melon, size));
+		this.addDropEntry(dropList, Items.melon_seeds, 0, 1, 6 + lootingLevel, 20 + lootingLevel * 10);
+		this.addDropEntry(dropList, Items.speckled_melon, 0, 1, 1, 2 + lootingLevel * 10);
 	}
 
 	@Override

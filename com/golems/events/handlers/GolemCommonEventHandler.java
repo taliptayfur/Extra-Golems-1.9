@@ -1,4 +1,4 @@
-package com.golems.events;
+package com.golems.events.handlers;
 
 import com.golems.entity.EntityBookshelfGolem;
 import com.golems.entity.EntityClayGolem;
@@ -32,11 +32,19 @@ import com.golems.entity.EntityStrawGolem;
 import com.golems.entity.EntityTNTGolem;
 import com.golems.entity.EntityWoodenGolem;
 import com.golems.entity.EntityWoolGolem;
+import com.golems.entity.GolemBase;
+import com.golems.entity.GolemColorizedMultiTextured;
+import com.golems.entity.GolemMultiTextured;
+import com.golems.events.GolemBuildEvent;
 import com.golems.main.Config;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockWorkbench;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /** Handles events added specifically from this mod **/
@@ -75,10 +83,6 @@ public class GolemCommonEventHandler
 			else if(event.blockBelow == Blocks.sandstone)
 			{
 				event.setGolem(new EntitySandstoneGolem(event.worldObj), Config.ALLOW_SANDSTONE_GOLEM);
-			}
-			else if(event.blockBelow == Blocks.wool)
-			{
-				event.setGolem(new EntityWoolGolem(event.worldObj), Config.ALLOW_WOOL_GOLEM);
 			}
 			else if(event.blockBelow == Blocks.hardened_clay)
 			{
@@ -150,7 +154,12 @@ public class GolemCommonEventHandler
 			}
 			else if(event.blockBelow == Blocks.brown_mushroom_block || event.blockBelow == Blocks.red_mushroom_block)
 			{
-				event.setGolem(new EntityMushroomGolem(event.worldObj), Config.ALLOW_MUSHROOM_GOLEM);
+				GolemMultiTextured golem = new EntityMushroomGolem(event.worldObj);
+				// use block metadata to give this golem the right texture
+				byte textureNum = event.blockBelow == Blocks.red_mushroom_block ? (byte)0 : (byte)1;
+				golem.setTextureNum(textureNum);
+				// actually set the golem
+				event.setGolem(golem, Config.ALLOW_MUSHROOM_GOLEM);
 			}
 			else if(event.blockBelow == Blocks.red_sandstone)
 			{
@@ -164,18 +173,48 @@ public class GolemCommonEventHandler
 			{
 				event.setGolem(new EntityRedstoneGolem(event.worldObj), Config.ALLOW_REDSTONE_GOLEM);
 			}
+			else if(event.blockBelow == Blocks.wool)
+			{
+				GolemMultiTextured golem = new EntityWoolGolem(event.worldObj);
+				// use block metadata to give this golem the right texture
+				int meta = event.blockBelow.getMetaFromState(event.blockState) % golem.getTextureStringArray().length;
+				golem.setTextureNum((byte)meta);
+				// actually set the golem
+				event.setGolem(golem, Config.ALLOW_WOOL_GOLEM);
+			}
 			else if(event.blockBelow == Blocks.stained_hardened_clay)
 			{
-				event.setGolem(new EntityStainedClayGolem(event.worldObj), Config.ALLOW_STAINED_CLAY_GOLEM);
+				GolemColorizedMultiTextured golem = new EntityStainedClayGolem(event.worldObj);
+				// use block metadata to give this golem the right texture
+				int meta = event.blockBelow.getMetaFromState(event.blockState) % golem.getColorArray().length;
+				golem.setTextureNum((byte)(golem.getColorArray().length - meta - 1));
+				// actually set the golem
+				event.setGolem(golem, Config.ALLOW_STAINED_CLAY_GOLEM);
 			}
 			else if(event.blockBelow == Blocks.stained_glass)
 			{
-				event.setGolem(new EntityStainedGlassGolem(event.worldObj), Config.ALLOW_STAINED_GLASS_GOLEM);
+				GolemColorizedMultiTextured golem = new EntityStainedGlassGolem(event.worldObj);
+				// use block metadata to give this golem the right texture
+				int meta = event.blockBelow.getMetaFromState(event.blockState) % golem.getColorArray().length;
+				golem.setTextureNum((byte)(golem.getColorArray().length - meta - 1));
+				// actually set the golem
+				event.setGolem(golem, Config.ALLOW_STAINED_GLASS_GOLEM);
 			}
 			else if(event.blockBelow instanceof BlockWorkbench)
 			{
 				event.setGolem(new EntityCraftingGolem(event.worldObj), Config.ALLOW_CRAFTING_GOLEM);
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onLivingSpawned(EntityJoinWorldEvent event)
+	{
+		// add custom 'attack golem' AI to zombies. They already have this for regular iron golems
+		if(event.getEntity() instanceof EntityZombie && !(event.getEntity() instanceof EntityPigZombie))
+		{
+			EntityZombie zombie = (EntityZombie)event.getEntity();
+			zombie.targetTasks.addTask(3, new EntityAINearestAttackableTarget(zombie, GolemBase.class, true));
 		}
 	}
 }

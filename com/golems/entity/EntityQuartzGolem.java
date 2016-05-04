@@ -35,7 +35,7 @@ public class EntityQuartzGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 4 + this.rand.nextInt(8 + lootingLevel * 2);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.quartz, size > 16 ? 16 : size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.quartz, size > 16 ? 16 : size));
 	}
    
 	@Override

@@ -1,7 +1,7 @@
 package com.golems.entity;
 
-import com.golems.content.BlockLightProvider;
-import com.golems.main.ContentInit;
+import com.golems.blocks.BlockLightProvider;
+import com.golems.main.GolemItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,7 +27,7 @@ public abstract class GolemLightProvider extends GolemBase
 	
 	public GolemLightProvider(World world, float attack, EnumLightLevel light)
 	{
-		this(world, attack, ContentInit.golemHead, light);
+		this(world, attack, GolemItems.golemHead, light);
 	}
 	
 	@Override
@@ -105,10 +105,8 @@ public abstract class GolemLightProvider extends GolemBase
 		{
 			switch(this)
 			{
-			case FULL: 	return ContentInit.blockLightSourceFull;
-			case HALF:	return ContentInit.blockLightSourceHalf;
-			case WATER_HALF: // TODO
-			case WATER_FULL: return ContentInit.blockWaterLightFull;
+			case FULL: case WATER_FULL:	return GolemItems.blockLightSourceFull;
+			case HALF: case WATER_HALF:	return GolemItems.blockLightSourceHalf;
 			default:	return Blocks.air;			
 			}
 		}

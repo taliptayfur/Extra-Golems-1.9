@@ -1,4 +1,4 @@
-package com.golems.content;
+package com.golems.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

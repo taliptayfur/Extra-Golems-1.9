@@ -1,6 +1,6 @@
 package com.golems.entity;
 
-import com.golems.main.ContentInit;
+import com.golems.main.GolemItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.IEntityLivingData;
@@ -135,7 +135,7 @@ public abstract class GolemMultiTextured extends GolemBase
 
 	public int getTextureNum() 
 	{
-		return (int)this.getTextureByte();
+		return this.getDataManager().get(DATA_TEXTURE).byteValue();
 	}
 	
 	/** Call getGolemTexture with specialized name concatenation **/
@@ -158,6 +158,11 @@ public abstract class GolemMultiTextured extends GolemBase
 	public String getTexturePrefix()
 	{
 		return this.texturePrefix;
+	}
+	
+	public String[] getTextureStringArray()
+	{
+		return this.textures;
 	}
 	
 	public abstract String getModId();

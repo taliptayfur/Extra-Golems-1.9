@@ -34,7 +34,7 @@ public class EntityObsidianGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 1 + this.rand.nextInt(2 + (lootingLevel > 2 ? 2 : lootingLevel));
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.obsidian, size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.obsidian, size));
 	}
    
 	@Override

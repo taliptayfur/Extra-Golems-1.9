@@ -86,7 +86,7 @@ public class EntitySpongeGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)	
 	{
 		int size = 1 + this.rand.nextInt(3 + lootingLevel);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Item.getItemFromBlock(Blocks.sponge), size > 4 ? 4 : size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Item.getItemFromBlock(Blocks.sponge), size > 4 ? 4 : size));
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.golems.events;
 
 import java.util.List;
 
-import com.golems.content.ItemGolemPaper;
+import com.golems.items.ItemGolemPaper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

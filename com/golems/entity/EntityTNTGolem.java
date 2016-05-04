@@ -198,9 +198,9 @@ public class EntityTNTGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 2 + this.rand.nextInt(4);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.gunpowder, size));
-		GolemBase.addDropEntry(dropList, Blocks.tnt, 0, 1, 1, lootingLevel * 30);
-		GolemBase.addDropEntry(dropList, Blocks.sand, 0, 0, 4, 5 + lootingLevel * 10);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.gunpowder, size));
+		this.addDropEntry(dropList, Blocks.tnt, 0, 1, 1, lootingLevel * 30);
+		this.addDropEntry(dropList, Blocks.sand, 0, 0, 4, 5 + lootingLevel * 10);
 	}
 
 	@Override

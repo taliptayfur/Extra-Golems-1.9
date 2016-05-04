@@ -49,7 +49,7 @@ public class EntityMushroomGolem extends GolemMultiTextured
 	{
 		int size = 4 + this.rand.nextInt(6 + lootingLevel * 2);
 		Block shroom = rand.nextBoolean() ? Blocks.red_mushroom : Blocks.brown_mushroom;
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(shroom, size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(shroom, size));
 	}
 
 	@Override

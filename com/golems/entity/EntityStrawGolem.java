@@ -36,8 +36,8 @@ public class EntityStrawGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 6 + this.rand.nextInt(8 + lootingLevel * 4);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.wheat, size));
-		GolemBase.addDropEntry(dropList, Items.wheat_seeds, 0, 1, 3 + lootingLevel * 2, 10 + lootingLevel * 10);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.wheat, size));
+		this.addDropEntry(dropList, Items.wheat_seeds, 0, 1, 3 + lootingLevel * 2, 10 + lootingLevel * 10);
 	}
 	
 	@Override

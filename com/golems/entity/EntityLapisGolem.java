@@ -64,8 +64,8 @@ public class EntityLapisGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 8 + this.rand.nextInt(10) + lootingLevel * 4;
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.dye, size, 4));
-		GolemBase.addDropEntry(dropList, Items.gold_ingot, 0, 1, 1 + lootingLevel, 8 + lootingLevel * 30);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.dye, size, 4));
+		this.addDropEntry(dropList, Items.gold_ingot, 0, 1, 1 + lootingLevel, 8 + lootingLevel * 30);
 	}
 
 	@Override

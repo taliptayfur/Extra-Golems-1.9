@@ -61,9 +61,9 @@ public class EntityWoodenGolem extends GolemMultiTextured
 	{
 		int size = 6 + this.rand.nextInt(4 + lootingLevel * 4);
 		int meta = this.getTextureNum() % woodTypes.length;
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Item.getItemFromBlock(Blocks.planks), size > 16 ? 16 : size, meta));
-		GolemBase.addDropEntry(dropList, Items.stick, 0, 1, 4, 10 + lootingLevel * 4);
-		GolemBase.addDropEntry(dropList, Blocks.sapling, 0, 1, 2, 4 + lootingLevel * 4);
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Item.getItemFromBlock(Blocks.planks), size > 16 ? 16 : size, meta));
+		this.addDropEntry(dropList, Items.stick, 0, 1, 4, 10 + lootingLevel * 4);
+		this.addDropEntry(dropList, Blocks.sapling, 0, 1, 2, 4 + lootingLevel * 4);
 	}
 
 	@Override

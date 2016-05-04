@@ -36,7 +36,7 @@ public class EntityStainedClayGolem extends GolemColorizedMultiTextured
 	{
 		int meta = Config.TWEAK_STAINED_CLAY < 0 ? 15 - this.getTextureNum() : Config.TWEAK_STAINED_CLAY;
 		int size = 1 + lootingLevel + rand.nextInt(3);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.stained_hardened_clay, size > 4 ? 4 : size, meta));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.stained_hardened_clay, size > 4 ? 4 : size, meta));
 	}
 
 	@Override

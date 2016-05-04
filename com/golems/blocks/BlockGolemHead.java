@@ -1,7 +1,8 @@
-package com.golems.content;
+package com.golems.blocks;
 
 import com.golems.entity.GolemBase;
 import com.golems.events.GolemBuildEvent;
+import com.golems.items.ItemBedrockGolem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -16,7 +17,6 @@ import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -90,8 +90,9 @@ public class BlockGolemHead extends BlockHorizontal
 					entitysnowman.setLocationAndAngles((double)x + 0.5D, (double)y - 1.95D, (double)z + 0.5D, 0.0F, 0.0F);
 					world.spawnEntityInWorld(entitysnowman);
 				}
-
-				spawnParticles(world, x, y - 2, z);
+				
+				ItemBedrockGolem.spawnParticles(world, x + 0.5D, y - 1.5D, z + 0.5D, 0.2D);
+				return;
 			}
 
 			if(flagX || flagZ)
@@ -127,18 +128,8 @@ public class BlockGolemHead extends BlockHorizontal
 					golem.setPlayerCreated(true);
 					golem.setLocationAndAngles((double)x + 0.5D, (double)y - 1.95D, (double)z + 0.5D, 0.0F, 0.0F);
 					world.spawnEntityInWorld(golem);
-				}
-
-				spawnParticles(world, x, y - 2, z);
-			}			
-		}
-	}
-
-	protected void spawnParticles(World world, int x, int y, int z)
-	{
-		for (int i1 = 0; i1 < 120; ++i1)
-		{
-			world.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, (double)x + world.rand.nextDouble(), (double)y + world.rand.nextDouble() * 2.5D, (double)z + world.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+				} 
+			}
 		}
 	}
 	

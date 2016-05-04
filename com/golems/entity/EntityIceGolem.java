@@ -132,10 +132,10 @@ public class EntityIceGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 1 + lootingLevel;
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.ice, size > 4 ? 4 : size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.ice, size > 4 ? 4 : size));
 		if(lootingLevel > 0 || !Config.CAN_USE_REGULAR_ICE)
 		{
-			GolemBase.addDropEntry(dropList, Blocks.packed_ice, 0, 0, size > 2 ? 2 : size, 80);
+			this.addDropEntry(dropList, Blocks.packed_ice, 0, 0, size > 2 ? 2 : size, 80);
 		}
 	}
 

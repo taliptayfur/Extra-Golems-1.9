@@ -1,4 +1,6 @@
-package com.golems.events;
+package com.golems.events.handlers;
+
+import com.golems.events.GolemPaperAddInfoEvent;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

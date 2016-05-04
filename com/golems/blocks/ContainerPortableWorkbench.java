@@ -1,4 +1,4 @@
-package com.golems.content;
+package com.golems.blocks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

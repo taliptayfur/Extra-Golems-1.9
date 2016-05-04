@@ -3,7 +3,7 @@ package com.golems.entity;
 import java.util.List;
 
 import com.golems.main.Config;
-import com.golems.main.ContentInit;
+import com.golems.main.GolemItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -38,7 +38,7 @@ public class EntityRedstoneGolem extends GolemBase
 	
 	public EntityRedstoneGolem(World world, float attack, int power, final boolean CONFIG_ALLOWS_POWERING)
 	{
-		this(world, attack, ContentInit.golemHead, power, CONFIG_ALLOWS_POWERING);
+		this(world, attack, GolemItems.golemHead, power, CONFIG_ALLOWS_POWERING);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class EntityRedstoneGolem extends GolemBase
 			// if the block is air, make it a power block
 			if(this.worldObj.isAirBlock(at))
 			{
-				return this.worldObj.setBlockState(at, ContentInit.blockPowerSource.getStateFromMeta(this.getPowerOutput()));
+				return this.worldObj.setBlockState(at, GolemItems.blockPowerSource.getStateFromMeta(this.getPowerOutput()));
 			}
 		}
 		return false;
@@ -106,7 +106,7 @@ public class EntityRedstoneGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 8 + rand.nextInt(14 + lootingLevel * 4);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.redstone, size > 36 ? 36 : size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.redstone, size > 36 ? 36 : size));
 	}
 
 	@Override

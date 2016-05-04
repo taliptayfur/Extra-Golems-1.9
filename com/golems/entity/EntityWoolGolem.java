@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class EntityWoolGolem extends GolemMultiTextured 
 {	
 	public static final String woolPrefix = "wool";
-	private static final String[] coloredWoolTypes = {"black","orange","magenta","light_blue","yellow","lime","pink","gray","silver","cyan","purple","blue","brown","green","red"};
+	private static final String[] coloredWoolTypes = {"black","orange","magenta","light_blue","yellow","lime","pink","gray","silver","cyan","purple","blue","brown","green","red","white"};
 
 	public EntityWoolGolem(World world) 
 	{
@@ -52,15 +52,22 @@ public class EntityWoolGolem extends GolemMultiTextured
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 1 + this.rand.nextInt(3) + lootingLevel;
-		int meta = this.getTextureNum() % (coloredWoolTypes.length + 1);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.wool, 1 + rand.nextInt(2), 0));
-		GolemBase.addDropEntry(dropList, Blocks.wool, meta, 1, 2, 60 + lootingLevel * 10);
-		GolemBase.addDropEntry(dropList, Items.string, 0, 1, 2, 5 + lootingLevel * 10);
+		int meta = this.getTextureNum() % coloredWoolTypes.length;
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.wool, 1 + rand.nextInt(2), 0));
+		this.addDropEntry(dropList, Blocks.wool, meta, 1, 2, 60 + lootingLevel * 10);
+		this.addDropEntry(dropList, Items.string, 0, 1, 2, 5 + lootingLevel * 10);
 	}
 
 	@Override
 	public SoundEvent getGolemSound() 
 	{
 		return SoundEvents.block_cloth_step;
+	}
+	
+	@Override
+	public void setTextureNum(byte toSet)
+	{
+		toSet %= (byte)(this.coloredWoolTypes.length - 1);
+		super.setTextureNum(toSet);
 	}
 }

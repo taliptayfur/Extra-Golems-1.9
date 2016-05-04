@@ -32,7 +32,7 @@ public class EntityGlassGolem extends GolemBase
 	@Override
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
-		GolemBase.addDropEntry(dropList, Blocks.glass, 0, lootingLevel, lootingLevel + 1, 90);
+		this.addDropEntry(dropList, Blocks.glass, 0, lootingLevel, lootingLevel + 1, 90);
 	}
 	
 	@Override

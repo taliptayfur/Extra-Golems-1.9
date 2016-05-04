@@ -50,7 +50,8 @@ public class EntityStainedGlassGolem extends GolemColorizedMultiTextured
 	{
 		int meta = Config.TWEAK_STAINED_GLASS < 0 ? 15 - this.getTextureNum() : Config.TWEAK_STAINED_GLASS;
 		int size = lootingLevel + rand.nextInt(3 + lootingLevel);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.stained_glass, size > 4 ? 4 : size, meta));
+		this.addDropEntry(dropList, Blocks.stained_glass, meta, 0, size > 4 ? 4 : size, 50 + lootingLevel * 10);
+		this.addDropEntry(dropList, Blocks.stained_glass_pane, meta, 1, 5 + lootingLevel, 80 + lootingLevel * 10);
 	}
 
 	@Override

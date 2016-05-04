@@ -37,7 +37,7 @@ public class EntityGlowstoneGolem extends GolemLightProvider
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 6 + this.rand.nextInt(8 + lootingLevel * 2);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.glowstone_dust, size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.glowstone_dust, size));
 	}
  
 	@Override

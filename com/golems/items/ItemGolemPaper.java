@@ -1,9 +1,8 @@
-package com.golems.content;
+package com.golems.items;
 
 import java.util.List;
 
 import com.golems.events.GolemPaperAddInfoEvent;
-import com.golems.main.ContentInit;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,7 +20,6 @@ public class ItemGolemPaper extends Item
 	public ItemGolemPaper()
 	{
 		super();
-		this.setUnlocalizedName(ContentInit.N_PAPER);
 		this.setCreativeTab(CreativeTabs.tabMisc);
 	}
 	

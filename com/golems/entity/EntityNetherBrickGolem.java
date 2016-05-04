@@ -97,7 +97,7 @@ public class EntityNetherBrickGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 4 + this.rand.nextInt(8 + lootingLevel);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.netherbrick, size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.netherbrick, size));
 	}
 
 	@Override

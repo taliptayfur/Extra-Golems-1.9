@@ -83,7 +83,7 @@ public class EntitySlimeGolem extends GolemBase
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)	
 	{
 		int size = 11 + this.rand.nextInt(16 + lootingLevel * 4);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Items.slime_ball, size));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Items.slime_ball, size));
 	}
 
 	@Override

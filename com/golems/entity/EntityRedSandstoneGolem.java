@@ -24,6 +24,6 @@ public class EntityRedSandstoneGolem extends EntitySandstoneGolem
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
 		int size = 4 + this.rand.nextInt(8 + lootingLevel * 2);
-		GolemBase.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.sand, size, 1));
+		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.sand, size, 1));
 	}
 }

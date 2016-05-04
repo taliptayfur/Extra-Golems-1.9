@@ -1,34 +1,34 @@
 package com.golems.main;
 
-import com.golems.events.GolemClientEventHandler;
-import com.golems.events.GolemCommonEventHandler;
+import com.golems.events.handlers.GolemClientEventHandler;
+import com.golems.events.handlers.GolemCommonEventHandler;
 import com.golems.proxies.CommonProxy;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = ExtraGolems.MODID, name = ExtraGolems.NAME, version = ExtraGolems.VERSION, acceptedMinecraftVersions = ExtraGolems.MCVERSION)
 public class ExtraGolems 
 {	
 	public static final String MODID = "golems";
 	public static final String NAME = "Extra Golems";
-	public static final String VERSION = "4.01";
+	public static final String VERSION = "4.02";
 	public static final String MCVERSION = "1.9";
-	public static final String CLIENT = "com." + MODID + ".proxies.ClientProxy";
-	public static final String SERVER = "com." + MODID + ".proxies.CommonProxy";
 	
-	@SidedProxy(clientSide = ExtraGolems.CLIENT, serverSide = ExtraGolems.SERVER)
+	@SidedProxy(clientSide = "com." + MODID + ".proxies.ClientProxy", serverSide = "com." + MODID + ".proxies.CommonProxy")
 	public static CommonProxy proxy;
 	
 	@Mod.Instance(ExtraGolems.MODID)
@@ -38,7 +38,7 @@ public class ExtraGolems
 	public static void preInit(FMLPreInitializationEvent event) 
 	{	
 		Config.mainRegistry(new Configuration(event.getSuggestedConfigurationFile()));
-		ContentInit.mainRegistry();
+		GolemItems.mainRegistry();
 		GolemEntityRegister.mainRegistry();
 		proxy.registerEntityRenders();
 	}
@@ -47,7 +47,7 @@ public class ExtraGolems
 	public static void init(FMLInitializationEvent event) 
 	{		
 		registerCrafting();
-		MinecraftForge.EVENT_BUS.register(new GolemCommonEventHandler());	// register event handler
+		MinecraftForge.EVENT_BUS.register(new GolemCommonEventHandler());
 		if(event.getSide() == Side.CLIENT)
 		{
 			MinecraftForge.EVENT_BUS.register(new GolemClientEventHandler());
@@ -58,8 +58,9 @@ public class ExtraGolems
 	
 	public static void registerCrafting()
 	{
-		GameRegistry.addShapelessRecipe(new ItemStack(ContentInit.golemPaper, 1), Items.feather,Items.redstone,new ItemStack(Items.dye, 1, 0),Items.paper);
-		GameRegistry.addShapelessRecipe(new ItemStack(ContentInit.golemHead, 1), ContentInit.golemPaper,Blocks.pumpkin);
+		IRecipe recipeGolemPaper = new ShapelessOreRecipe(new ItemStack(GolemItems.golemPaper, 1), Items.feather, Items.redstone, "dyeBlack", Items.paper);
+		GameRegistry.addRecipe(recipeGolemPaper);
+		GameRegistry.addShapelessRecipe(new ItemStack(GolemItems.golemHead, 1), GolemItems.golemPaper,Blocks.pumpkin);
 	}
 }
 
