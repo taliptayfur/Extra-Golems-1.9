@@ -1,6 +1,5 @@
 package com.golems.proxies;
 
-import com.golems.blocks.BlockPowerProvider;
 import com.golems.entity.EntityBedrockGolem;
 import com.golems.entity.EntityBookshelfGolem;
 import com.golems.entity.EntityClayGolem;
@@ -40,16 +39,11 @@ import com.golems.main.GolemItems;
 import com.golems.renders.RenderColoredGolem;
 import com.golems.renders.RenderGolem;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoor;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;

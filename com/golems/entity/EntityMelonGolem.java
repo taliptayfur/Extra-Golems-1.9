@@ -15,19 +15,25 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
 public class EntityMelonGolem extends GolemBase 
 {	
+	public static final String ALLOW_SPECIAL = "Allow Special: Plant Flowers";
+	public static final String FREQUENCY = "Flower Frequency";
+	
 	private IBlockState[] flowers;
 	private final Block[] soils = {Blocks.dirt, Blocks.grass, Blocks.mycelium, Blocks.farmland};
 	
 	public EntityMelonGolem(World world) 
 	{
-		super(world, 1.5F, Blocks.melon_block);	
+		super(world, Config.MELON.getBaseAttack(), Blocks.melon_block);	
+		this.setCanSwim(true);
 		
+		// init list and AI for planting flowers
 		List<IBlockState> lFlowers = new ArrayList();
 		for(EnumFlowerType e : BlockFlower.EnumFlowerType.values())
 		{
@@ -38,7 +44,9 @@ public class EntityMelonGolem extends GolemBase
 			lFlowers.add(Blocks.tallgrass.getStateFromMeta(j));
 		}
 		this.flowers = lFlowers.toArray(new IBlockState[lFlowers.size()]);
-		this.tasks.addTask(2, new EntityAIPlaceRandomBlocks(this, Config.TWEAK_MELON, flowers, soils, Config.ALLOW_MELON_SPECIAL));
+		int freq = Config.MELON.getInt(FREQUENCY);
+		boolean allowed = Config.MELON.getBoolean(ALLOW_SPECIAL);
+		this.tasks.addTask(2, new EntityAIPlaceRandomBlocks(this, freq, flowers, soils, allowed));
 	}
 	
 	@Override
@@ -48,15 +56,15 @@ public class EntityMelonGolem extends GolemBase
 	}
 
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("melon"));
+		return this.makeGolemTexture("melon");
 	}
 
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(18.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.MELON.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D);
 	}
 

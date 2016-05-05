@@ -3,6 +3,7 @@ package com.golems.entity;
 import java.util.List;
 
 import com.golems.items.ItemBedrockGolem;
+import com.golems.main.Config;
 import com.golems.main.GolemItems;
 
 import net.minecraft.entity.Entity;
@@ -13,6 +14,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -21,16 +23,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityBedrockGolem extends GolemBase 
 {
-
 	public EntityBedrockGolem(World world) 
 	{
-		super(world, 32.0F, Blocks.bedrock);
+		super(world, Config.BEDROCK.getBaseAttack(), Blocks.bedrock);
 	}
 
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("bedrock"));
+		return this.makeGolemTexture("bedrock");
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class EntityBedrockGolem extends GolemBase
 	}
 
 	@Override
-	public boolean isEntityInvulnerable(DamageSource p_180431_1_)
+	public boolean isEntityInvulnerable(DamageSource src)
     {
         return true;
     }
@@ -76,7 +77,7 @@ public class EntityBedrockGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(999.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.BEDROCK.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0D);
 	}

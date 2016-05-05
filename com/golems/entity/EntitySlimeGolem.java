@@ -13,23 +13,26 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
 public class EntitySlimeGolem extends GolemBase 
-{			
+{		
+	public static final String ALLOW_SPECIAL = "Allow Special: Extra Knockback";
+	public static final String KNOCKBACK = "Knockback Factor";
+	
 	public EntitySlimeGolem(World world) 
 	{
-		super(world, 2.5F, Blocks.slime_block);
-		((PathNavigateGround)this.getNavigator()).setCanSwim(true);
-		this.tasks.addTask(0, new EntityAISwimming(this));		
+		super(world, Config.SLIME.getBaseAttack(), Blocks.slime_block);
+		this.setCanSwim(true);	
 	}
 
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("slime"));
+		return this.makeGolemTexture("slime");
 	}
 
 	@Override
@@ -37,9 +40,9 @@ public class EntitySlimeGolem extends GolemBase
 	{
 		if(super.attackEntityAsMob(entity))
 		{
-			if(Config.ALLOW_SLIME_SPECIAL)
+			if(Config.SLIME.getBoolean(ALLOW_SPECIAL))
 			{
-				knockbackTarget(entity, Config.TWEAK_SLIME);
+				knockbackTarget(entity, Config.SLIME.getFloat(KNOCKBACK));
 			}
 			return true;
 		}
@@ -52,9 +55,9 @@ public class EntitySlimeGolem extends GolemBase
 		if (!this.isEntityInvulnerable(source))
 		{
 			super.damageEntity(source, amount);
-			if(source.getEntity() != null && Config.ALLOW_SLIME_SPECIAL)
+			if(source.getEntity() != null && Config.SLIME.getBoolean(ALLOW_SPECIAL))
 			{
-				knockbackTarget(source.getEntity(), Config.TWEAK_SLIME * 3 / 5);
+				knockbackTarget(source.getEntity(), Config.SLIME.getFloat(KNOCKBACK) * 3.0F / 5.0F);
 			}
 		}
 	}
@@ -74,7 +77,7 @@ public class EntitySlimeGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(85.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.SLIME.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.29D);
 		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0.5D);
 	}

@@ -2,10 +2,13 @@ package com.golems.entity;
 
 import java.util.List;
 
+import com.golems.main.Config;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -14,18 +17,18 @@ public class EntitySandstoneGolem extends GolemBase
 {			
 	public EntitySandstoneGolem(World world) 
 	{
-		super(world, 4.0F, Blocks.sandstone);
+		super(world, Config.SANDSTONE.getBaseAttack(), Blocks.sandstone);
 	}
 	
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("sandstone"));
+		return this.makeGolemTexture("sandstone");
 	}
 		
 	@Override
 	protected void applyAttributes() 
 	{
-	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
+	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.SANDSTONE.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 	}
 	

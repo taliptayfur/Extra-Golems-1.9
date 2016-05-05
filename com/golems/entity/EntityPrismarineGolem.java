@@ -2,11 +2,14 @@ package com.golems.entity;
 
 import java.util.List;
 
+import com.golems.main.Config;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -15,13 +18,13 @@ public class EntityPrismarineGolem extends GolemBase
 {			
 	public EntityPrismarineGolem(World world) 
 	{
-		super(world, 8.0F, Blocks.prismarine);
+		super(world, Config.PRISMARINE.getBaseAttack(), Blocks.prismarine);
 	}
 	
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("prismarine"));
+		return this.makeGolemTexture("prismarine");
 	}
 	
 	/**
@@ -45,7 +48,7 @@ public class EntityPrismarineGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
+	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.PRISMARINE.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
 	}
 	

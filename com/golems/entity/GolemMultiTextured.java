@@ -1,7 +1,5 @@
 package com.golems.entity;
 
-import com.golems.main.GolemItems;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,10 +49,10 @@ public abstract class GolemMultiTextured extends GolemBase
 	}
 	
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
 		// apply TEMPORARY texture to avoid NPE. Actual texture is first applied in onLivingUpdate
-		this.setTextureType(this.getGolemTexture("clay"));
+		return this.makeGolemTexture("clay");
 	}
 	
 	@Override
@@ -147,7 +145,7 @@ public abstract class GolemMultiTextured extends GolemBase
 	/** Call getGolemTexture with specialized name concatenation **/
 	public ResourceLocation getSpecialGolemTexture(String s)
 	{
-		return GolemBase.getGolemTexture(getModId(), this.getTexturePrefix() + "_" + s);
+		return GolemBase.makeGolemTexture(getModId(), this.getTexturePrefix() + "_" + s);
 	}
 	
 	public String getTextureStringFromArray()

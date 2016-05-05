@@ -1,206 +1,275 @@
 package com.golems.main;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.golems.entity.EntityBedrockGolem;
+import com.golems.entity.EntityBookshelfGolem;
+import com.golems.entity.EntityClayGolem;
+import com.golems.entity.EntityCoalGolem;
+import com.golems.entity.EntityCraftingGolem;
+import com.golems.entity.EntityDiamondGolem;
+import com.golems.entity.EntityEmeraldGolem;
+import com.golems.entity.EntityEndstoneGolem;
+import com.golems.entity.EntityGlassGolem;
+import com.golems.entity.EntityGlowstoneGolem;
+import com.golems.entity.EntityGoldGolem;
+import com.golems.entity.EntityHardenedClayGolem;
+import com.golems.entity.EntityIceGolem;
+import com.golems.entity.EntityLapisGolem;
+import com.golems.entity.EntityLeafGolem;
+import com.golems.entity.EntityMelonGolem;
+import com.golems.entity.EntityMushroomGolem;
+import com.golems.entity.EntityNetherBrickGolem;
+import com.golems.entity.EntityObsidianGolem;
+import com.golems.entity.EntityPrismarineGolem;
+import com.golems.entity.EntityQuartzGolem;
+import com.golems.entity.EntityRedSandstoneGolem;
+import com.golems.entity.EntityRedstoneGolem;
+import com.golems.entity.EntitySandstoneGolem;
+import com.golems.entity.EntitySeaLanternGolem;
+import com.golems.entity.EntitySlimeGolem;
+import com.golems.entity.EntitySpongeGolem;
+import com.golems.entity.EntityStainedClayGolem;
+import com.golems.entity.EntityStainedGlassGolem;
+import com.golems.entity.EntityStrawGolem;
+import com.golems.entity.EntityTNTGolem;
+import com.golems.entity.EntityWoodenGolem;
+import com.golems.entity.EntityWoolGolem;
+import com.golems.entity.GolemBase;
+
 import net.minecraftforge.common.config.Configuration;
 
 /** Registers the config settings to adjust aspects of this mod **/
 public class Config 
 {
-	public static boolean ALLOW_BEDROCK_GOLEM;
-	public static boolean ALLOW_BOOKSHELF_GOLEM;
-	public static boolean ALLOW_CLAY_GOLEM;
-	public static boolean ALLOW_COAL_GOLEM;
-	public static boolean ALLOW_CRAFTING_GOLEM;
-	public static boolean ALLOW_DIAMOND_GOLEM;
-	public static boolean ALLOW_EMERALD_GOLEM;
-	public static boolean ALLOW_ENDSTONE_GOLEM;
-	public static boolean ALLOW_GLASS_GOLEM;
-	public static boolean ALLOW_GLOWSTONE_GOLEM;
-	public static boolean ALLOW_GOLD_GOLEM;
-	public static boolean ALLOW_HARD_CLAY_GOLEM;
-	public static boolean ALLOW_ICE_GOLEM;
-	public static boolean ALLOW_LAPIS_GOLEM;
-	public static boolean ALLOW_LEAF_GOLEM;
-	public static boolean ALLOW_MELON_GOLEM;
-	public static boolean ALLOW_MUSHROOM_GOLEM;
-	public static boolean ALLOW_NETHERBRICK_GOLEM;
-	public static boolean ALLOW_OBSIDIAN_GOLEM;
-	public static boolean ALLOW_PRISMARINE_GOLEM;
-	public static boolean ALLOW_QUARTZ_GOLEM;
-	public static boolean ALLOW_RED_SANDSTONE_GOLEM;
-	public static boolean ALLOW_REDSTONE_GOLEM;
-	public static boolean ALLOW_SANDSTONE_GOLEM;
-	public static boolean ALLOW_SLIME_GOLEM;
-	public static boolean ALLOW_SPONGE_GOLEM;
-	public static boolean ALLOW_STAINED_CLAY_GOLEM;
-	public static boolean ALLOW_STAINED_GLASS_GOLEM;
-	public static boolean ALLOW_STRAW_GOLEM;
-	public static boolean ALLOW_TNT_GOLEM;
-	public static boolean ALLOW_WOODEN_GOLEM;
-	public static boolean ALLOW_WOOL_GOLEM;
+	public static Map<Class<? extends GolemBase>, GolemConfigSet> configMap;
 	
-	public static boolean ALLOW_BOOKSHELF_SPECIAL;
-	public static boolean ALLOW_COAL_SPECIAL;
-	public static boolean ALLOW_ENDSTONE_SPECIAL;
-	public static boolean ALLOW_ICE_SPECIAL;
-	public static boolean ALLOW_LAPIS_SPECIAL;
-	public static boolean ALLOW_LEAF_SPECIAL;	
-	public static boolean ALLOW_MELON_SPECIAL;
-	public static boolean ALLOW_MUSHROOM_SPECIAL;
-	public static boolean ALLOW_NETHERBRICK_SPECIAL_FIRE;
-	public static boolean ALLOW_NETHERBRICK_SPECIAL_LAVA;
-	public static boolean ALLOW_REDSTONE_SPECIAL;
-	public static boolean ALLOW_SEA_LANTERN_GOLEM;
-	public static boolean ALLOW_SLIME_SPECIAL;
-	public static boolean ALLOW_SPONGE_SPECIAL;
-	public static boolean ALLOW_TNT_SPECIAL;
+	public static GolemConfigSet BEDROCK;
+	public static GolemConfigSet BOOKSHELF;
+	public static GolemConfigSet CLAY;
+	public static GolemConfigSet COAL;
+	public static GolemConfigSet CRAFTING;
+	public static GolemConfigSet DIAMOND;
+	public static GolemConfigSet EMERALD;
+	public static GolemConfigSet ENDSTONE;
+	public static GolemConfigSet GLASS;
+	public static GolemConfigSet GLOWSTONE;
+	public static GolemConfigSet GOLD;
+	public static GolemConfigSet HARD_CLAY;
+	public static GolemConfigSet ICE;
+	public static GolemConfigSet LAPIS;
+	public static GolemConfigSet LEAF;
+	public static GolemConfigSet MELON;
+	public static GolemConfigSet MUSHROOM;
+	public static GolemConfigSet NETHERBRICK;
+	public static GolemConfigSet OBSIDIAN;
+	public static GolemConfigSet PRISMARINE;
+	public static GolemConfigSet QUARTZ;
+	public static GolemConfigSet RED_SANDSTONE;
+	public static GolemConfigSet REDSTONE;
+	public static GolemConfigSet SANDSTONE;
+	public static GolemConfigSet SEA_LANTERN;
+	public static GolemConfigSet SLIME;
+	public static GolemConfigSet SPONGE;
+	public static GolemConfigSet STAINED_CLAY;
+	public static GolemConfigSet STAINED_GLASS;
+	public static GolemConfigSet STRAW;
+	public static GolemConfigSet TNT;
+	public static GolemConfigSet WOOD;
+	public static GolemConfigSet WOOL;
+	/*
+	public static final String KEY_BOOKSHELF_SPECIAL = "Allow Special: Potion Effects";
+	public static final String KEY_COAL_SPECIAL = "Allow Special: Blindness";
+	public static final String KEY_ENDSTONE_SPECIAL = "Allow Special: Teleporting";
+	public static final String KEY_ICE_SPECIAL = "Allow Special: Freeze Blocks";
+	public static final String KEY_LAPIS_SPECIAL = "Allow Special: Potion Effects";
+	public static final String KEY_LEAF_SPECIAL = "Allow Special: Regeneration";
+	public static final String KEY_MELON_SPECIAL = "Allow Special: Plant Flowers";
+	public static final String KEY_MUSHROOM_SPECIAL = "Allow Special: Plant Mushrooms";
+	public static final String KEY_NETHERBRICK_LAVA_SPECIAL = "Allow Special: Melt Cobblestone";
+	public static final String KEY_NETHERBRICK_FIRE_SPECIAL = "Allow Special: Burn Enemies";
+	public static final String KEY_REDSTONE_SPECIAL = "Allow Special: Redstone Power";
+	public static final String KEY_SLIME_SPECIAL = "Allow Special: Extra Knockback";
+	public static final String KEY_SPONGE_SPECIAL = "Allow Special: Absorb Water";
+	public static final String KEY_TNT_SPECIAL = "Allow Special: Explode";
 	
-	public static boolean ALLOW_SPONGE_PARTICLES;
-	public static boolean ALLOW_ENDSTONE_WATER_HURT;
-	public static int TWEAK_MELON;
-	public static int TWEAK_MUSHROOM;
-	public static int TWEAK_NETHERBRICK;
-	public static int TWEAK_REDSTONE;
-	public static float TWEAK_SLIME;
-	public static int TWEAK_SPONGE_INTERVAL;
-	public static int TWEAK_SPONGE;
-	public static int TWEAK_STAINED_CLAY;
-	public static int TWEAK_STAINED_GLASS;
+	public static final String KEY_SPONGE_PARTICLES = "Can Render Sponge Particles";
+	public static final String KEY_ENDSTONE_WATER_HURT = "Can Take Water Damage";
+	public static final String KEY_MELON_FREQUENCY = "Flower Frequency";
+	public static final String KEY_MUSHROOM_FREQUENCY = "Mushroom Frequency";
+	public static final String KEY_NETHERBRICK_DELAY = "Melting Delay";
+	public static final String KEY_REDSTONE_POWER = "Redstone Power Level";
+	public static final String KEY_SLIME_KNOCKBACK = "Knockback Factor";
+	public static final String KEY_SPONGE_INTERVAL = "Water Soaking Frequency";
+	public static final String KEY_SPONGE_RANGE = "Water Soaking Range";
+	public static final String KEY_STAINED_CLAY_DROPS = "Drop Metadata";
+	public static final String KEY_STAINED_GLASS_DROPS = "Drop Metadata";
 	
-	public static boolean CAN_USE_REGULAR_ICE;
-	
-	private static final String CATEGORY_SPAWNS = "spawns";
-	private static final String CATEGORY_ABILITY = "abilities";
-	private static final String CATEGORY_TWEAKS = "tweaks";
-	
+	public static final String KEY_USE_REGULAR_ICE = "Can Use Regular Ice";
+	*/
 	public static void mainRegistry(Configuration config)
 	{
-		config.load();
-		
-		ALLOW_BOOKSHELF_SPECIAL = config.getBoolean("Allow Bookshelf Special", CATEGORY_ABILITY, true, 
-				"Whether the Bookshelf Golem can give itself potion effects");	
-		ALLOW_COAL_SPECIAL = config.getBoolean("Allow Coal Golem Special", CATEGORY_ABILITY, false, 
-				"Whether the Coal Golem can give temporary blindness effect");
-		ALLOW_ENDSTONE_SPECIAL = config.getBoolean("Allow Endstone Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Endstone Golem can teleport");
-		ALLOW_ICE_SPECIAL = config.getBoolean("Allow Ice Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Ice Golem can freeze water and cool lava nearby");	
-		ALLOW_LAPIS_SPECIAL = config.getBoolean("Allow Lapis Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Lapis Golem can give enemies potion effects");
-		ALLOW_LEAF_SPECIAL = config.getBoolean("Allow Leaf Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Leaf Golem can give itself Regeneration I");
-		ALLOW_MELON_SPECIAL = config.getBoolean("Allow Melon Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Melon Golem can occasionally plant flowers");
-		ALLOW_MUSHROOM_SPECIAL = config.getBoolean("Allow Mushroom Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Mushroom Golem can occasionally plant mushrooms");;
-		ALLOW_NETHERBRICK_SPECIAL_FIRE = config.getBoolean("Allow NetherBrick Golem Fire Special", CATEGORY_ABILITY, true, 
-				"Whether the NetherBrick Golem can light enemies on fire");
-		ALLOW_NETHERBRICK_SPECIAL_LAVA = config.getBoolean("Allow NetherBrick Golem Lava Special", CATEGORY_ABILITY, true, 
-				"Whether the NetherBrick Golem can melt cobblestone when in place for too long");
-		ALLOW_REDSTONE_SPECIAL = config.getBoolean("Allow Redstone Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Redstone Golem can power nearby blocks");
-		ALLOW_SPONGE_SPECIAL = config.getBoolean("Allow Sponge Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Sponge Golem can soak up water nearby");
-		ALLOW_SLIME_SPECIAL = config.getBoolean("Allow Slime Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the Slimy Golem can apply extra knockback when attacking");
-		ALLOW_TNT_SPECIAL = config.getBoolean("Allow TNT Golem Special", CATEGORY_ABILITY, true, 
-				"Whether the TNT Golem can explode randomly or upon death");
-		
-		/////////////////////////////////////////////////////////////////////////////////////
-		
-		ALLOW_BEDROCK_GOLEM = config.getBoolean("Allow Bedrock Golem", CATEGORY_SPAWNS, true,
-				"Whether the Bedrock Golem can be spawned in using the item");
-		ALLOW_BOOKSHELF_GOLEM = config.getBoolean("Allow Bookshelf Golem", CATEGORY_SPAWNS, true,
-				"Whether the Librarian Golem can be built.");
-		ALLOW_CLAY_GOLEM = config.getBoolean("Allow Clay Golem", CATEGORY_SPAWNS, true,
-				"Whether the Clay Golem can be built.");
-		ALLOW_COAL_GOLEM = config.getBoolean("Allow Coal Golem", CATEGORY_SPAWNS, true,
-				"Whether the Coal Golem can be built.");
-		ALLOW_CRAFTING_GOLEM = config.getBoolean("Allow Crafting Golem", CATEGORY_SPAWNS, true,
-				"Whether the Crafting Table Golem can be built.");
-		ALLOW_DIAMOND_GOLEM = config.getBoolean("Allow Diamond Golem", CATEGORY_SPAWNS, true,
-				"Whether the Diamond Golem can be built.");
-		ALLOW_EMERALD_GOLEM = config.getBoolean("Allow Emerald Golem", CATEGORY_SPAWNS, true,
-				"Whether the Emerald Golem can be built.");
-		ALLOW_ENDSTONE_GOLEM = config.getBoolean("Allow Endstone Golem", CATEGORY_SPAWNS, true,
-				"Whether the Endstone Golem can be built.");
-		ALLOW_GLASS_GOLEM = config.getBoolean("Allow Glass Golem", CATEGORY_SPAWNS, true,
-				"Whether the Glass Golem can be built.");
-		ALLOW_GLOWSTONE_GOLEM = config.getBoolean("Allow Glowstone Golem", CATEGORY_SPAWNS, true,
-				"Whether the Glowstone Golem can be built.");
-		ALLOW_GOLD_GOLEM = config.getBoolean("Allow Gold Golem", CATEGORY_SPAWNS, true,
-				"Whether the Gold Golem can be built.");
-		ALLOW_HARD_CLAY_GOLEM = config.getBoolean("Allow Hardended Clay Golem", CATEGORY_SPAWNS, true,
-				"Whether the Hardended Clay Golem can be built.");
-		ALLOW_ICE_GOLEM = config.getBoolean("Allow Ice Golem", CATEGORY_SPAWNS, true,
-				"Whether the Ice Golem can be built.");
-		ALLOW_LAPIS_GOLEM = config.getBoolean("Allow Lapis Golem", CATEGORY_SPAWNS, true,
-				"Whether the Lapis Lazuli Golem can be built.");
-		ALLOW_LEAF_GOLEM = config.getBoolean("Allow Leaf Golem", CATEGORY_SPAWNS, true,
-				"Whether the Leaf Golem can be built.");
-		ALLOW_MELON_GOLEM = config.getBoolean("Allow Melon Golem", CATEGORY_SPAWNS, true,
-				"Whether the Melon Golem can be built.");
-		ALLOW_MUSHROOM_GOLEM = config.getBoolean("Allow Mushroom Golem", CATEGORY_SPAWNS, true,
-				"Whether the Mushroom Golem can be built.");
-		ALLOW_NETHERBRICK_GOLEM = config.getBoolean("Allow NetherBrick Golem", CATEGORY_SPAWNS, true,
-				"Whether the Nether Brick Golem can be built.");
-		ALLOW_OBSIDIAN_GOLEM = config.getBoolean("Allow Obsidian Golem", CATEGORY_SPAWNS, true,
-				"Whether the Obsidian Golem can be built.");
-		ALLOW_PRISMARINE_GOLEM = config.getBoolean("Allow Prismarine Golem", CATEGORY_SPAWNS, true,
-				"Whether the Prismarine Golem can be built.");
-		ALLOW_QUARTZ_GOLEM = config.getBoolean("Allow Quartz Golem", CATEGORY_SPAWNS, true,
-				"Whether the Quartz Golem can be built.");
-		ALLOW_RED_SANDSTONE_GOLEM = config.getBoolean("Allow Red Sandstone Golem", CATEGORY_SPAWNS, true,
-				"Whether the Red Sandstone Golem can be built.");
-		ALLOW_REDSTONE_GOLEM = config.getBoolean("Allow Redstone Golem", CATEGORY_SPAWNS, true,
-				"Whether the Redstone Golem can be built.");
-		ALLOW_SEA_LANTERN_GOLEM = config.getBoolean("Allow Sea Lantern Golem", CATEGORY_SPAWNS, true,
-				"Whether the Sea Lantern Golem can be built.");
-		ALLOW_SANDSTONE_GOLEM = config.getBoolean("Allow Sandstone Golem", CATEGORY_SPAWNS, true,
-				"Whether the Sandstone Golem can be built.");
-		ALLOW_SLIME_GOLEM = config.getBoolean("Allow Slime Golem", CATEGORY_SPAWNS, true,
-				"Whether the Slime Golem can be built.");
-		ALLOW_SPONGE_GOLEM = config.getBoolean("Allow Sponge Golem", CATEGORY_SPAWNS, true,
-				"Whether the Sponge Golem can be built.");
-		ALLOW_STAINED_CLAY_GOLEM = config.getBoolean("Allow Stained Clay Golem", CATEGORY_SPAWNS, true,
-				"Whether the Stained Clay Golem can be built.");
-		ALLOW_STAINED_GLASS_GOLEM = config.getBoolean("Allow Stained Glass Golem", CATEGORY_SPAWNS, true,
-				"Whether the Stained Glass Golem can be built.");
-		ALLOW_STRAW_GOLEM = config.getBoolean("Allow Straw Golem", CATEGORY_SPAWNS, true,
-				"Whether the Straw Golem can be built.");
-		ALLOW_TNT_GOLEM = config.getBoolean("Allow TNT Golem", CATEGORY_SPAWNS, true,
-				"Whether the TNT Golem can be built.");
-		ALLOW_WOODEN_GOLEM = config.getBoolean("Allow Wooden Golem", CATEGORY_SPAWNS, true,
-				"Whether the Wooden Golem can be built.");
-		ALLOW_WOOL_GOLEM = config.getBoolean("Allow Wool Golem", CATEGORY_SPAWNS, true,
-				"Whether the Wool Golem can be built.");
-		CAN_USE_REGULAR_ICE = config.getBoolean("Can use regular Ice", CATEGORY_SPAWNS, true,
-				"When true, the Ice Golem can be built with regular ice as well as packed ice");
-		
-		/////////////////////////////////////////////////////////////////////////////////////
-		
-		ALLOW_SPONGE_PARTICLES = config.getBoolean("Allow Sponge Golem Particles", CATEGORY_SPAWNS, true,
-				"Whether the Sponge Golem should have 'water drip' particles");
-		ALLOW_ENDSTONE_WATER_HURT = config.getBoolean("Allow Water Hurt", CATEGORY_SPAWNS, true,
-				"Whether the Endstone Golem takes damage from water");
-		TWEAK_MELON = config.getInt("Melon Golem Interval", CATEGORY_TWEAKS, 240, 1, 24000, 
-				"Average number of ticks between planting flowers");
-		TWEAK_MUSHROOM = config.getInt("Mushroom Golem Interval", CATEGORY_TWEAKS, 420, 1, 24000, 
-				"Average number of ticks between planting mushrooms");
-		TWEAK_REDSTONE = config.getInt("Redstone Golem Power", CATEGORY_TWEAKS, 15, 1, 15, 
-				"Redstone power level emitted by Redstone Golem");
-		TWEAK_NETHERBRICK = config.getInt("NetherBrick Golem Interval", CATEGORY_TWEAKS, 400, 1, 24000, 
-				"Number of ticks it takes to melt cobblestone (20 sec * 20 t/sec = 400 t)");
-		TWEAK_SLIME = config.getFloat("Slime Golem Knockback", CATEGORY_TWEAKS, 2.0012F, 0.0001F, 10.0F, 
-				"How powerful the Slime Golem attack is (Higher Value = Further Knockback)");
-		TWEAK_SPONGE_INTERVAL = config.getInt("Sponge Golem Interval", CATEGORY_TWEAKS, 2, 1, 24000, 
-				"Number of ticks in between water-checks. Increase to reduce lag.");
-		TWEAK_SPONGE = config.getInt("Sponge Golem Range", CATEGORY_TWEAKS, 2, 2, 8, 
-				"Radial distance at which Sponge Golem can absorb water (Warning: larger values cause lag)");
-		TWEAK_STAINED_CLAY = config.getInt("Stained Clay Golem drop metadata", CATEGORY_TWEAKS, -1, -1, 15, 
-				"The metadata of stained clay dropped by Stained Clay golems. Set to -1 to let it be based on current texture.");
-		TWEAK_STAINED_GLASS = config.getInt("Stained Glass Golem drop metadata", CATEGORY_TWEAKS, -1, -1, 15, 
-				"The metadata of stained glass dropped by Stained Glass golems. Set to -1 to let it be based on current texture.");
-		
-		config.save();
+		initGolemConfigSets(config);
+		loadSpecials();
 	}
+	
+	/** Now I can change default attack and health values all from one place **/
+	public static void initGolemConfigSets(Configuration config)
+	{
+		BEDROCK = new GolemConfigSet(config, "Bedrock Golem", 999.0D, 32.0F);
+		BOOKSHELF = new GolemConfigSet(config, "Bookshelf Golem", 28.0D, 1.5F);
+		CLAY = new GolemConfigSet(config, "Clay Golem", 20.0D, 2.0F);
+		COAL = new GolemConfigSet(config, "Coal Golem", 14.0D, 2.5F);
+		CRAFTING = new GolemConfigSet(config, "Crafting Golem", 24.0D, 2.0F);
+		DIAMOND = new GolemConfigSet(config, "Diamond Golem", 220.0D, 20.0F);
+		EMERALD = new GolemConfigSet(config, "Emerald Golem", 190.0D, 18.0F);
+		ENDSTONE = new GolemConfigSet(config, "Endstone Golem", 50.0D, 8.0F);
+		GLASS = new GolemConfigSet(config, "Glass Golem", 8.0D, 13.0F);
+		GLOWSTONE = new GolemConfigSet(config, "Glowstone Golem", 8.0D, 12.0F);
+		GOLD = new GolemConfigSet(config, "Gold Golem", 80.0D, 8.0F);
+		HARD_CLAY = new GolemConfigSet(config, "Hardened Clay", 22.0D, 4.0F);
+		ICE = new GolemConfigSet(config, "Ice Golem", 18.0D, 6.0F);
+		LAPIS = new GolemConfigSet(config, "Lapis Lazuli Golem", 50.0D, 1.5F);
+		LEAF = new GolemConfigSet(config, "Leaf Golem", 6.0D, 0.5F);
+		MELON = new GolemConfigSet(config, "Melon Golem", 18.0D, 1.5F);
+		MUSHROOM = new GolemConfigSet(config, "Mushroom Golem", 30.0D, 3.0F);
+		NETHERBRICK = new GolemConfigSet(config, "Nether Brick Golem", 25.0D, 6.5F);
+		OBSIDIAN = new GolemConfigSet(config, "Obsidian Golem", 120.0D, 18.0F);
+		PRISMARINE = new GolemConfigSet(config, "Prismarine Golem", 24.0D, 8.0F);
+		QUARTZ = new GolemConfigSet(config, "Quartz Golem", 85.0D, 8.5F);
+		RED_SANDSTONE = new GolemConfigSet(config, "Red Sandstone Golem", 15.0D, 4.0F);
+		REDSTONE = new GolemConfigSet(config, "Redstone Golem", 18.0D, 2.0F);
+		SANDSTONE = new GolemConfigSet(config, "Sandstone Golem", 15.0D, 4.0F);
+		SEA_LANTERN = new GolemConfigSet(config, "Sea Lantern", 26.0D, 4.0F);
+		SLIME = new GolemConfigSet(config, "Slime Golem", 85.0D, 2.5F);
+		SPONGE = new GolemConfigSet(config, "Sponge Golem", 20.0D, 1.5F);
+		STAINED_CLAY = new GolemConfigSet(config, "Stained Clay Golem", 26.0D, 3.0F);
+		STAINED_GLASS = new GolemConfigSet(config, "Stained Glass Golem", 9.0D, 12.0F);
+		STRAW = new GolemConfigSet(config, "Straw Golem", 10.0D, 1.0F);
+		TNT = new GolemConfigSet(config, "TNT Golem", 14.0D, 2.5F);
+		WOOD = new GolemConfigSet(config, "Wooden Golem", 20.0D, 3.0F);
+		WOOL = new GolemConfigSet(config, "Wool Golem", 10.0D, 1.0F);		
+	}
+	
+	public static void loadSpecials()
+	{
+		BOOKSHELF.addKey(EntityBookshelfGolem.ALLOW_SPECIAL, true, "Whether this golem can give itself potion effects");
+		COAL.addKey(EntityCoalGolem.ALLOW_SPECIAL, false, "Whether this golem can inflict blindness");
+		ENDSTONE.addKey(EntityEndstoneGolem.ALLOW_SPECIAL, true, "Whether this golem can teleport");
+		ENDSTONE.addKey(EntityEndstoneGolem.ALLOW_WATER_HURT, true, "Whether the Endstone Golem takes damage from water");
+		ICE.addKey(EntityIceGolem.ALLOW_SPECIAL, true, "Whether this golem can freeze water and cool lava nearby");
+		ICE.addKey(EntityIceGolem.CAN_USE_REGULAR_ICE, true, "When true, the Ice Golem can be built with regular ice as well as packed ice");
+		LAPIS.addKey(EntityLapisGolem.ALLOW_SPECIAL, true, "Whether this golem can inflict harmful potion effects");
+		LEAF.addKey(EntityLeafGolem.ALLOW_SPECIAL, true, "Whether this golem can heal itself");
+		MELON.addKey(EntityMelonGolem.ALLOW_SPECIAL, true, "Whether this golem can plant flowers randomly");
+		MELON.addKey(EntityMelonGolem.FREQUENCY, 240, 1, 24000, "Average number of ticks between planting flowers");
+		MUSHROOM.addKey(EntityMushroomGolem.ALLOW_SPECIAL, true, "Whether this golem can plant mushrooms randomly");
+		MUSHROOM.addKey(EntityMushroomGolem.FREQUENCY, 420, 1, 24000, "Average number of ticks between planting mushrooms");
+		NETHERBRICK.addKey(EntityNetherBrickGolem.ALLOW_FIRE_SPECIAL, true, "Whether this golem can light mobs on fire");
+		NETHERBRICK.addKey(EntityNetherBrickGolem.ALLOW_LAVA_SPECIAL, true, "Whether this golem can slowly melt cobblestone");
+		NETHERBRICK.addKey(EntityNetherBrickGolem.MELT_DELAY, 400, 1, 24000, "Number of ticks it takes to melt cobblestone (20 sec * 20 t/sec = 400 t)");
+		REDSTONE.addKey(EntityRedstoneGolem.ALLOW_SPECIAL, true, "Whether this golem can power nearby redstone");
+		REDSTONE.addKey(EntityRedstoneGolem.POWER, 15, 0, 15, "Level of redstone power emitted by this golem");
+		SLIME.addKey(EntitySlimeGolem.ALLOW_SPECIAL, true, "Whether this golem can apply extra knockback when attacking");
+		SLIME.addKey(EntitySlimeGolem.KNOCKBACK, 2.0012F, 0.001F, 10.0F, "How powerful the Slime Golem attack is (Higher Value = Further Knockback)");
+		SPONGE.addKey(EntitySpongeGolem.ALLOW_SPECIAL, true, "Whether this golem can absorb water");
+		SPONGE.addKey(EntitySpongeGolem.PARTICLES, true, "Whether this golem should always drip water");
+		SPONGE.addKey(EntitySpongeGolem.RANGE, 2, 2, 8, "Radial distance at which this golem can absorb water (Warning: larger values cause lag)");
+		SPONGE.addKey(EntitySpongeGolem.INTERVAL, 1, 1, 24000, "Number of ticks between each water-check; increase to reduce lag");
+		STAINED_CLAY.addKey(EntityStainedClayGolem.DROP_META, -1, -1, 15, "The metadata of stained clay dropped by this golem. Set to -1 to let it be based on current texture");
+		STAINED_GLASS.addKey(EntityStainedGlassGolem.DROP_META, -1, -1, 15, "The metadata of stained glass dropped by this golem. Set to -1 to let it be based on current texture");
+	}
+/*
+	private static void registerConfigSets()
+	{
+		configMap = new HashMap(40);
+		configMap.put(EntityBedrockGolem.class, BEDROCK);
+		configMap.put(EntityBookshelfGolem.class, BOOKSHELF);
+		configMap.put(EntityClayGolem.class, CLAY);
+		configMap.put(EntityCoalGolem.class, COAL);
+		configMap.put(EntityCraftingGolem.class, CRAFTING);
+		configMap.put(EntityDiamondGolem.class, DIAMOND);
+		configMap.put(EntityEmeraldGolem.class, EMERALD);
+		configMap.put(EntityEndstoneGolem.class, ENDSTONE);
+		configMap.put(EntityGlassGolem.class, GLASS);
+		configMap.put(EntityGlowstoneGolem.class, GLOWSTONE);
+		configMap.put(EntityGoldGolem.class, GOLD);
+		configMap.put(EntityHardenedClayGolem.class, HARD_CLAY);
+		configMap.put(EntityIceGolem.class, ICE);
+		configMap.put(EntityLapisGolem.class, LAPIS);
+		configMap.put(EntityLeafGolem.class, LEAF);
+		configMap.put(EntityMelonGolem.class, MELON);
+		configMap.put(EntityMushroomGolem.class, MUSHROOM);
+		configMap.put(EntityNetherBrickGolem.class, NETHERBRICK);
+		configMap.put(EntityObsidianGolem.class, OBSIDIAN);
+		configMap.put(EntityPrismarineGolem.class, PRISMARINE);
+		configMap.put(EntityQuartzGolem.class, QUARTZ);
+		configMap.put(EntityRedSandstoneGolem.class, RED_SANDSTONE);
+		configMap.put(EntityRedstoneGolem.class, REDSTONE);
+		configMap.put(EntitySandstoneGolem.class, SANDSTONE);
+		configMap.put(EntitySeaLanternGolem.class, SEA_LANTERN);
+		configMap.put(EntitySlimeGolem.class, SLIME);
+		configMap.put(EntitySpongeGolem.class, SPONGE);
+		configMap.put(EntityStainedClayGolem.class, STAINED_CLAY);
+		configMap.put(EntityStainedGlassGolem.class, STAINED_GLASS);
+		configMap.put(EntityStrawGolem.class, STRAW);
+		configMap.put(EntityTNTGolem.class, TNT);
+		configMap.put(EntityWoodenGolem.class, WOOD);
+		configMap.put(EntityWoolGolem.class, WOOL);
+	}
+	
+	public static GolemConfigSet registerConfigSet(Class<? extends GolemBase> clazz, GolemConfigSet configSet)
+	{
+		return configMap.put(clazz, configSet);
+	}
+	
+	public static boolean getBoolean(GolemBase golem, String key)
+	{
+		GolemConfigSet set = getConfigFor(golem);
+		if(set != null)
+		{
+			return set.getBoolean(key);
+		}
+		return false;
+	}
+	
+	public static int getInt(GolemBase golem, String key)
+	{
+		GolemConfigSet set = getConfigFor(golem);
+		if(set != null)
+		{
+			return set.getInt(key);
+		}
+		return 0;
+	}
+	
+	public static float getFloat(GolemBase golem, String key)
+	{
+		GolemConfigSet set = getConfigFor(golem);
+		if(set != null)
+		{
+			return set.getFloat(key);
+		}
+		return 0.0F;
+	}
+	
+	public static GolemConfigSet getConfigFor(GolemBase golem)
+	{
+		return golem != null ? getConfigFor(golem.getClass()) : (GolemConfigSet)null;
+	}
+	
+	public static GolemConfigSet getConfigFor(Class<? extends GolemBase> golem) throws IllegalArgumentException
+	{
+		if(configMap.containsKey(golem))
+		{
+			return configMap.get(golem);
+		}
+		else
+		{
+			String error = "Error: could not find GolemConfigSet for class " + golem.getName();
+			throw new IllegalArgumentException(error);
+		}
+	}
+*/
 }

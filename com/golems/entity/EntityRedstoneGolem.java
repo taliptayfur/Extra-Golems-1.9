@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
@@ -18,17 +19,20 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityRedstoneGolem extends GolemBase 
-{		
-	private final boolean CAN_POWER;
+{	
+	public static final String ALLOW_SPECIAL = "Allow Special: Redstone Power";
+	public static final String POWER = "Redstone Power Level";
+	
+	protected boolean CAN_POWER;
 	protected int powerOutput;
 	protected int tickDelay;
 	
 	public EntityRedstoneGolem(World world) 
 	{
-		this(world, 2.0F, Blocks.redstone_block, Config.TWEAK_REDSTONE, Config.ALLOW_REDSTONE_SPECIAL);
+		this(world, Config.REDSTONE.getBaseAttack(), Blocks.redstone_block, Config.REDSTONE.getInt(POWER), Config.REDSTONE.getBoolean(ALLOW_SPECIAL));
 	}
 	
-	public EntityRedstoneGolem(World world, float attack, Block pick, int power, final boolean CONFIG_ALLOWS_POWERING) 
+	public EntityRedstoneGolem(World world, float attack, Block pick, int power, boolean CONFIG_ALLOWS_POWERING) 
 	{
 		super(world, attack, pick);
 		this.setPowerOutput(power);
@@ -36,21 +40,21 @@ public class EntityRedstoneGolem extends GolemBase
 		this.tickDelay = 2;
 	}
 	
-	public EntityRedstoneGolem(World world, float attack, int power, final boolean CONFIG_ALLOWS_POWERING)
+	public EntityRedstoneGolem(World world, float attack, int power, boolean CONFIG_ALLOWS_POWERING)
 	{
 		this(world, attack, GolemItems.golemHead, power, CONFIG_ALLOWS_POWERING);
 	}
 
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("redstone"));
+		return this.makeGolemTexture("redstone");
 	}
 
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(18.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.REDSTONE.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D);
 	}
 	

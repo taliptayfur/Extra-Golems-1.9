@@ -13,27 +13,30 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
 public class EntityCoalGolem extends GolemBase
 {
+	public static final String ALLOW_SPECIAL = "Allow Special: Blindness";
+	
 	public EntityCoalGolem(World world) 
 	{
-		super(world, 2.5F, Blocks.coal_block);
+		super(world, Config.COAL.getBaseAttack(), Blocks.coal_block);
 	}
 	
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("coal"));
+		return this.makeGolemTexture("coal");
 	}
 
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(14.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.COAL.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 	}
 	
@@ -44,7 +47,7 @@ public class EntityCoalGolem extends GolemBase
 		if(super.attackEntityAsMob(entity))
 		{
 			final int BLIND_CHANCE = 4;
-			if(Config.ALLOW_COAL_SPECIAL && entity instanceof EntityLivingBase && this.rand.nextInt(BLIND_CHANCE) == 0)
+			if(Config.COAL.getBoolean(ALLOW_SPECIAL) && entity instanceof EntityLivingBase && this.rand.nextInt(BLIND_CHANCE) == 0)
 			{
 				((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.blindness, 20 * (1 + rand.nextInt(5)), 1));
 			}

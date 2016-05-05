@@ -52,7 +52,10 @@ public abstract class GolemColorized extends GolemBase
 	}
 	
 	@Override
-	protected void applyTexture() {}
+	protected ResourceLocation applyTexture() 
+	{
+		return makeGolemTexture("clay");
+	}
 	
 	/** An optional texture to render as-is, without coloring **/
 	public ResourceLocation getTextureBase()

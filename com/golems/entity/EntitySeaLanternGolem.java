@@ -2,11 +2,14 @@ package com.golems.entity;
 
 import java.util.List;
 
+import com.golems.main.Config;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -15,19 +18,19 @@ public class EntitySeaLanternGolem extends GolemLightProvider
 {			
 	public EntitySeaLanternGolem(World world) 
 	{
-		super(world, 4.0F, Blocks.sea_lantern, EnumLightLevel.WATER_FULL);
+		super(world, Config.SEA_LANTERN.getBaseAttack(), Blocks.sea_lantern, EnumLightLevel.WATER_FULL);
 		this.tickDelay = 1;
 	}
 	
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("sea_lantern"));
+		return this.makeGolemTexture("sea_lantern");
 	}
 
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(26.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.SEA_LANTERN.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D);
 	}
 

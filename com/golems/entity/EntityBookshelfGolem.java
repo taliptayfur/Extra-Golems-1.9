@@ -12,24 +12,26 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
 public class EntityBookshelfGolem extends GolemBase 
 {		
+	public static final String ALLOW_SPECIAL = "Allow Special: Potion Effects";
 	private Potion[] goodEffects = 
 		{MobEffects.fireResistance,MobEffects.regeneration,MobEffects.damageBoost,MobEffects.absorption,MobEffects.luck,
 		 MobEffects.heal,MobEffects.resistance,MobEffects.invisibility,MobEffects.moveSpeed,MobEffects.healthBoost};
 	
 	public EntityBookshelfGolem(World world) 
 	{
-		super(world, 1.5F, Blocks.bookshelf);
+		super(world, Config.BOOKSHELF.getBaseAttack(), Blocks.bookshelf);
 	}
 	
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("books"));
+		return this.makeGolemTexture("books");
 	}
 	
 	/**
@@ -42,7 +44,7 @@ public class EntityBookshelfGolem extends GolemBase
 	    super.onLivingUpdate();
 
 	    // Potion effects:  for this golem only
-	    if(Config.ALLOW_BOOKSHELF_SPECIAL && this.getActivePotionEffects().isEmpty() && rand.nextInt(40) == 0)
+	    if(Config.BOOKSHELF.getBoolean(ALLOW_SPECIAL) && this.getActivePotionEffects().isEmpty() && rand.nextInt(40) == 0)
 	    {
 	    	this.addPotionEffect(new PotionEffect(goodEffects[rand.nextInt(goodEffects.length)], 200 + 100 * (1 + rand.nextInt(5)), 1));
 	    }
@@ -51,7 +53,7 @@ public class EntityBookshelfGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(28.0D);
+	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.BOOKSHELF.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.29D);
 	}
 	

@@ -58,99 +58,105 @@ public class GolemCommonEventHandler
 		{
 			if(event.blockBelow == Blocks.diamond_block)
 			{
-				event.setGolem(new EntityDiamondGolem(event.worldObj), Config.ALLOW_DIAMOND_GOLEM);
+				event.setGolem(new EntityDiamondGolem(event.worldObj), Config.DIAMOND.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.emerald_block)
 			{
-				event.setGolem(new EntityEmeraldGolem(event.worldObj), Config.ALLOW_EMERALD_GOLEM);	
+				event.setGolem(new EntityEmeraldGolem(event.worldObj), Config.EMERALD.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.gold_block)
 			{
-				event.setGolem(new EntityGoldGolem(event.worldObj), Config.ALLOW_GOLD_GOLEM);	
+				event.setGolem(new EntityGoldGolem(event.worldObj), Config.GOLD.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.lapis_block)
 			{
-				event.setGolem(new EntityLapisGolem(event.worldObj), Config.ALLOW_LAPIS_GOLEM);	
+				event.setGolem(new EntityLapisGolem(event.worldObj), Config.LAPIS.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.tnt)
 			{
-				event.setGolem(new EntityTNTGolem(event.worldObj), Config.ALLOW_TNT_GOLEM);	
+				event.setGolem(new EntityTNTGolem(event.worldObj), Config.TNT.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.sponge)
 			{
-				event.setGolem(new EntitySpongeGolem(event.worldObj), Config.ALLOW_SPONGE_GOLEM);
+				event.setGolem(new EntitySpongeGolem(event.worldObj), Config.SPONGE.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.sandstone)
 			{
-				event.setGolem(new EntitySandstoneGolem(event.worldObj), Config.ALLOW_SANDSTONE_GOLEM);
+				event.setGolem(new EntitySandstoneGolem(event.worldObj), Config.SANDSTONE.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.hardened_clay)
 			{
-				event.setGolem(new EntityHardenedClayGolem(event.worldObj), Config.ALLOW_HARD_CLAY_GOLEM);
+				event.setGolem(new EntityHardenedClayGolem(event.worldObj), Config.HARD_CLAY.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.obsidian)
 			{
-				event.setGolem(new EntityObsidianGolem(event.worldObj), Config.ALLOW_OBSIDIAN_GOLEM);	
+				event.setGolem(new EntityObsidianGolem(event.worldObj), Config.OBSIDIAN.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.bookshelf)
 			{
-				event.setGolem(new EntityBookshelfGolem(event.worldObj), Config.ALLOW_BOOKSHELF_GOLEM);	
+				event.setGolem(new EntityBookshelfGolem(event.worldObj), Config.BOOKSHELF.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.glass)
 			{
-				event.setGolem(new EntityGlassGolem(event.worldObj), Config.ALLOW_GLASS_GOLEM);
+				event.setGolem(new EntityGlassGolem(event.worldObj), Config.GLASS.canSpawn());
 			}
-			else if(event.blockBelow == Blocks.packed_ice || (Config.CAN_USE_REGULAR_ICE && event.blockBelow == Blocks.ice))
+			else if(event.blockBelow == Blocks.packed_ice || (Config.ICE.getBoolean(EntityIceGolem.CAN_USE_REGULAR_ICE) && event.blockBelow == Blocks.ice))
 			{
-				event.setGolem(new EntityIceGolem(event.worldObj), Config.ALLOW_ICE_GOLEM);
+				event.setGolem(new EntityIceGolem(event.worldObj), Config.ICE.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.log || event.blockBelow == Blocks.log2)
 			{
-				event.setGolem(new EntityWoodenGolem(event.worldObj), Config.ALLOW_WOODEN_GOLEM);
+				GolemMultiTextured golem = new EntityWoodenGolem(event.worldObj);
+				// use block metadata to give this golem the right texture
+				int meta = event.blockBelow.getMetaFromState(event.blockState);
+				byte textureNum = event.blockBelow == Blocks.log ? (byte)meta : (byte)(meta + 4);
+				golem.setTextureNum(textureNum);
+				// actually set the golem
+				event.setGolem(golem, Config.WOOD.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.clay)
 			{
-				event.setGolem(new EntityClayGolem(event.worldObj), Config.ALLOW_CLAY_GOLEM);	
+				event.setGolem(new EntityClayGolem(event.worldObj), Config.CLAY.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.hay_block)
 			{
-				event.setGolem(new EntityStrawGolem(event.worldObj), Config.ALLOW_STRAW_GOLEM);	
+				event.setGolem(new EntityStrawGolem(event.worldObj), Config.STRAW.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.nether_brick)
 			{
-				event.setGolem(new EntityNetherBrickGolem(event.worldObj), Config.ALLOW_NETHERBRICK_GOLEM);	
+				event.setGolem(new EntityNetherBrickGolem(event.worldObj), Config.NETHERBRICK.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.glowstone)
 			{
-				event.setGolem(new EntityGlowstoneGolem(event.worldObj), Config.ALLOW_GLOWSTONE_GOLEM);	
+				event.setGolem(new EntityGlowstoneGolem(event.worldObj), Config.GLOWSTONE.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.end_stone)
 			{
-				event.setGolem(new EntityEndstoneGolem(event.worldObj), Config.ALLOW_ENDSTONE_GOLEM);	
+				event.setGolem(new EntityEndstoneGolem(event.worldObj), Config.ENDSTONE.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.quartz_block)
 			{
-				event.setGolem(new EntityQuartzGolem(event.worldObj), Config.ALLOW_QUARTZ_GOLEM);	
+				event.setGolem(new EntityQuartzGolem(event.worldObj), Config.QUARTZ.canSpawn());	
 			}
 			else if(event.blockBelow == Blocks.coal_block)
 			{
-				event.setGolem(new EntityCoalGolem(event.worldObj), Config.ALLOW_COAL_GOLEM);
+				event.setGolem(new EntityCoalGolem(event.worldObj), Config.COAL.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.melon_block)
 			{
-				event.setGolem(new EntityMelonGolem(event.worldObj), Config.ALLOW_MELON_GOLEM);
+				event.setGolem(new EntityMelonGolem(event.worldObj), Config.MELON.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.slime_block)
 			{
-				event.setGolem(new EntitySlimeGolem(event.worldObj), Config.ALLOW_SLIME_GOLEM);
+				event.setGolem(new EntitySlimeGolem(event.worldObj), Config.SLIME.canSpawn());
 			}
 			else if(event.blockBelow instanceof BlockLeaves)
 			{
-				event.setGolem(new EntityLeafGolem(event.worldObj), Config.ALLOW_LEAF_GOLEM);
+				event.setGolem(new EntityLeafGolem(event.worldObj), Config.LEAF.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.prismarine)
 			{
-				event.setGolem(new EntityPrismarineGolem(event.worldObj), Config.ALLOW_PRISMARINE_GOLEM);
+				event.setGolem(new EntityPrismarineGolem(event.worldObj), Config.PRISMARINE.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.brown_mushroom_block || event.blockBelow == Blocks.red_mushroom_block)
 			{
@@ -159,19 +165,19 @@ public class GolemCommonEventHandler
 				byte textureNum = event.blockBelow == Blocks.red_mushroom_block ? (byte)0 : (byte)1;
 				golem.setTextureNum(textureNum);
 				// actually set the golem
-				event.setGolem(golem, Config.ALLOW_MUSHROOM_GOLEM);
+				event.setGolem(golem, Config.MUSHROOM.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.red_sandstone)
 			{
-				event.setGolem(new EntityRedSandstoneGolem(event.worldObj), Config.ALLOW_RED_SANDSTONE_GOLEM);
+				event.setGolem(new EntityRedSandstoneGolem(event.worldObj), Config.RED_SANDSTONE.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.sea_lantern)
 			{
-				event.setGolem(new EntitySeaLanternGolem(event.worldObj), Config.ALLOW_SEA_LANTERN_GOLEM);
+				event.setGolem(new EntitySeaLanternGolem(event.worldObj), Config.SEA_LANTERN.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.redstone_block)
 			{
-				event.setGolem(new EntityRedstoneGolem(event.worldObj), Config.ALLOW_REDSTONE_GOLEM);
+				event.setGolem(new EntityRedstoneGolem(event.worldObj), Config.REDSTONE.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.wool)
 			{
@@ -180,7 +186,7 @@ public class GolemCommonEventHandler
 				int meta = event.blockBelow.getMetaFromState(event.blockState) % golem.getTextureStringArray().length;
 				golem.setTextureNum((byte)meta);
 				// actually set the golem
-				event.setGolem(golem, Config.ALLOW_WOOL_GOLEM);
+				event.setGolem(golem, Config.WOOL.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.stained_hardened_clay)
 			{
@@ -189,7 +195,7 @@ public class GolemCommonEventHandler
 				int meta = event.blockBelow.getMetaFromState(event.blockState) % golem.getColorArray().length;
 				golem.setTextureNum((byte)(golem.getColorArray().length - meta - 1));
 				// actually set the golem
-				event.setGolem(golem, Config.ALLOW_STAINED_CLAY_GOLEM);
+				event.setGolem(golem, Config.STAINED_CLAY.canSpawn());
 			}
 			else if(event.blockBelow == Blocks.stained_glass)
 			{
@@ -198,11 +204,11 @@ public class GolemCommonEventHandler
 				int meta = event.blockBelow.getMetaFromState(event.blockState) % golem.getColorArray().length;
 				golem.setTextureNum((byte)(golem.getColorArray().length - meta - 1));
 				// actually set the golem
-				event.setGolem(golem, Config.ALLOW_STAINED_GLASS_GOLEM);
+				event.setGolem(golem, Config.STAINED_GLASS.canSpawn());
 			}
 			else if(event.blockBelow instanceof BlockWorkbench)
 			{
-				event.setGolem(new EntityCraftingGolem(event.worldObj), Config.ALLOW_CRAFTING_GOLEM);
+				event.setGolem(new EntityCraftingGolem(event.worldObj), Config.CRAFTING.canSpawn());
 			}
 		}
 	}

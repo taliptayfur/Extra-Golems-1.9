@@ -12,6 +12,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
@@ -20,15 +21,18 @@ import net.minecraft.world.World;
 
 public class EntityIceGolem extends GolemBase 
 {			
+	public static final String ALLOW_SPECIAL = "Allow Special: Freeze Blocks";
+	public static final String CAN_USE_REGULAR_ICE = "Can Use Regular Ice";
+	
 	public EntityIceGolem(World world) 
 	{
-		super(world, 6.0F, Blocks.packed_ice);
-		((PathNavigateGround)this.getNavigator()).setCanSwim(true);
+		super(world, Config.ICE.getBaseAttack(), Blocks.packed_ice);
+		this.setCanSwim(true);
 	}
 
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("ice"));
+		return this.makeGolemTexture("ice");
 	}
 
 	/**
@@ -52,7 +56,7 @@ public class EntityIceGolem extends GolemBase
 				this.attackEntityFrom(DamageSource.onFire, 1.0F);
 			}
 			
-			if(Config.ALLOW_ICE_SPECIAL)
+			if(Config.ICE.getBoolean(ALLOW_SPECIAL))
 			{
 				freezeBlocks(this.worldObj, x, y, z);
 			}
@@ -124,7 +128,7 @@ public class EntityIceGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(18.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.ICE.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D);
 	}
 
@@ -133,7 +137,7 @@ public class EntityIceGolem extends GolemBase
 	{
 		int size = 1 + lootingLevel;
 		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.ice, size > 4 ? 4 : size));
-		if(lootingLevel > 0 || !Config.CAN_USE_REGULAR_ICE)
+		if(lootingLevel > 0 || !Config.ICE.getBoolean(CAN_USE_REGULAR_ICE))
 		{
 			this.addDropEntry(dropList, Blocks.packed_ice, 0, 0, size > 2 ? 2 : size, 80);
 		}

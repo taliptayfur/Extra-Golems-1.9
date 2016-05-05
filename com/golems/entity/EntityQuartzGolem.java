@@ -2,11 +2,14 @@ package com.golems.entity;
 
 import java.util.List;
 
+import com.golems.main.Config;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -15,19 +18,19 @@ public class EntityQuartzGolem extends GolemBase
 {			
 	public EntityQuartzGolem(World world) 
 	{
-		super(world, 8.5F, Blocks.quartz_block);
+		super(world, Config.QUARTZ.getBaseAttack(), Blocks.quartz_block);
 	}
 	
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("quartz"));
+		return this.makeGolemTexture("quartz");
 	}
 		
 	@Override
 	protected void applyAttributes() 
 	{
-	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(85.0D);
+	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.QUARTZ.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.29D);
 	}
 	

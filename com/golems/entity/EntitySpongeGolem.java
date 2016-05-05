@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
@@ -21,15 +22,21 @@ import net.minecraft.world.World;
 
 public class EntitySpongeGolem extends GolemBase 
 {	
+	public static final String ALLOW_SPECIAL = "Allow Special: Absorb Water";
+	public static final String INTERVAL = "Water Soaking Frequency";
+	public static final String RANGE = "Water Soaking Range";
+	public static final String PARTICLES = "Can Render Sponge Particles";
+	
 	public EntitySpongeGolem(World world) 
 	{
-		super(world, 1.5F, Blocks.sponge);
-		((PathNavigateGround)this.getNavigator()).setCanSwim(true);
+		super(world, Config.SPONGE.getBaseAttack(), Blocks.sponge);
+		this.setCanSwim(true);
 	}
 
-	protected void applyTexture()
+	@Override
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("sponge"));
+		return this.makeGolemTexture("sponge");
 	}
 
 	/**
@@ -40,21 +47,23 @@ public class EntitySpongeGolem extends GolemBase
 	public void onLivingUpdate()
 	{
 		super.onLivingUpdate();
-		if(Config.ALLOW_SPONGE_SPECIAL && (Config.TWEAK_SPONGE_INTERVAL <= 1 || this.ticksExisted % Config.TWEAK_SPONGE_INTERVAL == 0))
+		int interval = Config.SPONGE.getInt(INTERVAL);
+		if(Config.SPONGE.getBoolean(ALLOW_SPECIAL) && (interval <= 1 || this.ticksExisted % interval == 0))
 		{
 			int x = MathHelper.floor_double(this.posX);
 			int y = MathHelper.floor_double(this.posY - 0.20000000298023224D) + 2;
 			int z = MathHelper.floor_double(this.posZ);
 			BlockPos center = new BlockPos(x,y,z);
+			int range = Config.SPONGE.getInt(RANGE);
 
 			// check sphere around golem to absorb water
-			for(int i = -Config.TWEAK_SPONGE; i <= Config.TWEAK_SPONGE; i++)
+			for(int i = -range; i <= range; i++)
 			{
-				for(int j = -Config.TWEAK_SPONGE; j <= Config.TWEAK_SPONGE; j++)
+				for(int j = -range; j <= range; j++)
 				{
-					for(int k = -Config.TWEAK_SPONGE; k <= Config.TWEAK_SPONGE; k++)
+					for(int k = -range; k <= range; k++)
 					{
-						if(center.distanceSq(x + i, y + j, z + k) <= Config.TWEAK_SPONGE * Config.TWEAK_SPONGE)
+						if(center.distanceSq(x + i, y + j, z + k) <= range * range)
 						{
 							BlockPos pos = new BlockPos(x + i, y + j, z + k);
 							IBlockState state = this.worldObj.getBlockState(pos);
@@ -69,7 +78,7 @@ public class EntitySpongeGolem extends GolemBase
 			}
 		}
 
-		if(Config.ALLOW_SPONGE_PARTICLES && Math.abs(this.motionX) < 0.05D && Math.abs(this.motionZ) < 0.05D && worldObj.isRemote)
+		if(Config.SPONGE.getBoolean(PARTICLES) && Math.abs(this.motionX) < 0.05D && Math.abs(this.motionZ) < 0.05D && worldObj.isRemote)
 		{
 			this.worldObj.spawnParticle(EnumParticleTypes.DRIP_WATER, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width * 0.6D, this.posY + this.rand.nextDouble() * (double)this.height - 0.75D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 0.6D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.9D) * 0.5D, new int[0]);
 		}
@@ -78,7 +87,7 @@ public class EntitySpongeGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.SPONGE.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
 	}
 

@@ -3,6 +3,7 @@ package com.golems.entity;
 import java.util.List;
 
 import com.golems.blocks.ContainerPortableWorkbench;
+import com.golems.main.Config;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +14,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
@@ -22,20 +24,20 @@ public class EntityCraftingGolem extends GolemBase
 {
 	public EntityCraftingGolem(World world) 
 	{
-		super(world, 2.0F, Blocks.crafting_table);
+		super(world, Config.CRAFTING.getBaseAttack(), Blocks.crafting_table);
 	}
 
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(24.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.CRAFTING.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.29D);
 	}
 
 	@Override
-	protected void applyTexture() 
+	protected ResourceLocation applyTexture() 
 	{
-		this.setTextureType(this.getGolemTexture("crafting"));
+		return this.makeGolemTexture("crafting");
 	}
 	
 	@Override

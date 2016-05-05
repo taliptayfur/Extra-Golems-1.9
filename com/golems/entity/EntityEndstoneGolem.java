@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
@@ -27,11 +28,15 @@ import net.minecraft.world.World;
 
 public class EntityEndstoneGolem extends GolemBase 
 {			
+	public static final String ALLOW_SPECIAL = "Allow Special: Teleporting";
+	public static final String ALLOW_WATER_HURT = "Can Take Water Damage";
+	
 	/** countdown timer for next teleport **/
 	protected int teleportDelay;
 	/** Max distance for one teleport; range is 32.0 for endstone golem **/
 	protected double range;
 	protected boolean canTeleport;
+	protected boolean isHurtByWater;
 	protected boolean hasAmbientParticles;
 	
 	protected int ticksBetweenIdleTeleports;
@@ -41,7 +46,9 @@ public class EntityEndstoneGolem extends GolemBase
 	/** Default constructor **/
 	public EntityEndstoneGolem(World world) 
 	{
-		this(world, 8.0F, new ItemStack(Blocks.end_stone), 32.0D, Config.ALLOW_ENDSTONE_SPECIAL, true);
+		this(world, Config.ENDSTONE.getBaseAttack(), new ItemStack(Blocks.end_stone), 32.0D, 
+				Config.ENDSTONE.getBoolean(ALLOW_SPECIAL), 
+				Config.ENDSTONE.getBoolean(ALLOW_WATER_HURT), true);
 	}
 	
 	/**
@@ -54,13 +61,14 @@ public class EntityEndstoneGolem extends GolemBase
 	 * @param teleportingAllowed usually set by the config, checked here
 	 * @param ambientParticles whether always to display "portal" particles 
 	 **/
-	public EntityEndstoneGolem(World world, float attack, ItemStack pick, double teleportRange, boolean teleportingAllowed, boolean ambientParticles)
+	public EntityEndstoneGolem(World world, float attack, ItemStack pick, double teleportRange, boolean teleportingAllowed, boolean hurtByWater, boolean ambientParticles)
 	{
 		super(world, attack, pick);
 		this.ticksBetweenIdleTeleports = 200;
 		this.chanceToTeleportWhenHurt = 15;
 		this.range = teleportRange;
 		this.canTeleport = teleportingAllowed;
+		this.isHurtByWater = hurtByWater;
 		this.hasAmbientParticles = ambientParticles;
 	}
 
@@ -73,21 +81,21 @@ public class EntityEndstoneGolem extends GolemBase
 	 * @param teleportingAllowed usually set by the config, checked here
 	 * @param ambientParticles whether to always display "portal" particles
 	 **/
-	public EntityEndstoneGolem(World world, float attack, double teleportRange, boolean teleportingAllowed, boolean ambientParticles) 
+	public EntityEndstoneGolem(World world, float attack, double teleportRange, boolean teleportingAllowed, boolean hurtByWater, boolean ambientParticles) 
 	{
-		this(world, attack, new ItemStack(GolemItems.golemHead, 1), teleportRange, teleportingAllowed, ambientParticles);
+		this(world, attack, new ItemStack(GolemItems.golemHead, 1), teleportRange, teleportingAllowed, hurtByWater, ambientParticles);
 	}
 	
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("end_stone"));
+		return this.makeGolemTexture("end_stone");
 	}
 	
 	@Override
 	protected void applyAttributes() 
 	{
-	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
+	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.ENDSTONE.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D);
 	}
 	
@@ -189,7 +197,7 @@ public class EntityEndstoneGolem extends GolemBase
 	{
 		super.updateAITasks();
 		
-		if(Config.ALLOW_ENDSTONE_WATER_HURT && this.isWet())
+		if(this.isHurtByWater && this.isWet())
         {
             this.attackEntityFrom(DamageSource.drown, 1.0F);
             for(int i = 0; i < 16; ++i)

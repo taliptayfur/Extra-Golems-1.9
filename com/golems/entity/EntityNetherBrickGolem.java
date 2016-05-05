@@ -12,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
@@ -19,22 +20,27 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityNetherBrickGolem extends GolemBase 
-{			
+{		
+	public static final String ALLOW_LAVA_SPECIAL = "Allow Special: Melt Cobblestone";
+	public static final String ALLOW_FIRE_SPECIAL = "Allow Special: Burn Enemies";
+	public static final String MELT_DELAY = "Melting Delay";
+	
 	/** Golem should stand in one spot for number of ticks before affecting the block below it */
 	private int ticksStandingStill;
 
 	public EntityNetherBrickGolem(World world) 
 	{
-		super(world, 6.5F, Blocks.nether_brick);
+		super(world, Config.NETHERBRICK.getBaseAttack(), Blocks.nether_brick);
 		this.ticksStandingStill = 0;
 		this.isImmuneToFire = true;
 		this.stepHeight = 1.0F;
 		this.tasks.addTask(0, new EntityAISwimming(this));
 	}
-
-	protected void applyTexture()
+	
+	@Override
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("nether_brick"));
+		return this.makeGolemTexture("nether_brick");
 	}
 
 	/** Attack by lighting on fire as well */
@@ -43,7 +49,7 @@ public class EntityNetherBrickGolem extends GolemBase
 	{
 		if(super.attackEntityAsMob(entity))
 		{
-			if(Config.ALLOW_NETHERBRICK_SPECIAL_FIRE)
+			if(Config.NETHERBRICK.getBoolean(ALLOW_FIRE_SPECIAL))
 			{
 				entity.setFire(2 + rand.nextInt(5));
 			}
@@ -60,7 +66,7 @@ public class EntityNetherBrickGolem extends GolemBase
 	public void onLivingUpdate()
 	{
 		super.onLivingUpdate();
-		if(Config.ALLOW_NETHERBRICK_SPECIAL_LAVA)
+		if(Config.NETHERBRICK.getBoolean(ALLOW_LAVA_SPECIAL))
 		{
 			int x = MathHelper.floor_double(this.posX);
 			int y = MathHelper.floor_double(this.posY - 0.20000000298023224D);
@@ -73,7 +79,7 @@ public class EntityNetherBrickGolem extends GolemBase
 			
 			if(x == MathHelper.floor_double(this.lastTickPosX) && z == MathHelper.floor_double(this.lastTickPosZ))
 			{
-				if(++this.ticksStandingStill >= Config.TWEAK_NETHERBRICK && b1 == Blocks.cobblestone && rand.nextInt(16) == 0)
+				if(++this.ticksStandingStill >= Config.NETHERBRICK.getInt(MELT_DELAY) && b1 == Blocks.cobblestone && rand.nextInt(16) == 0)
 				{
 					this.worldObj.setBlockState(below, Blocks.lava.getDefaultState(), 3);
 					this.ticksStandingStill = 0;
@@ -89,7 +95,7 @@ public class EntityNetherBrickGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.NETHERBRICK.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 	}
 

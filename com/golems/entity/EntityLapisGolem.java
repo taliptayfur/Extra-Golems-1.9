@@ -15,25 +15,28 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
 public class EntityLapisGolem extends GolemBase 
 {			
+	public static final String ALLOW_SPECIAL = "Allow Special: Potion Effects";
+	
 	private Potion[] badEffects = 
 		{MobEffects.blindness,MobEffects.moveSlowdown,MobEffects.poison,
 		 MobEffects.weakness,MobEffects.wither,MobEffects.unluck};
 
 	public EntityLapisGolem(World world) 
 	{
-		super(world, 1.5F, Blocks.lapis_block);
+		super(world, Config.LAPIS.getBaseAttack(), Blocks.lapis_block);
 	}
 
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("lapis"));
+		return this.makeGolemTexture("lapis");
 	}
 	
 	/** Attack by adding potion effect as well */
@@ -43,7 +46,7 @@ public class EntityLapisGolem extends GolemBase
 		if(super.attackEntityAsMob(entityIn) && entityIn instanceof EntityLivingBase)
 		{
 			EntityLivingBase entity = (EntityLivingBase)entityIn;
-			if(Config.ALLOW_LAPIS_SPECIAL)
+			if(Config.LAPIS.getBoolean(ALLOW_SPECIAL))
 			{
 				Potion potionID = entity.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD ? MobEffects.heal : badEffects[rand.nextInt(badEffects.length)];
 				entity.addPotionEffect(new PotionEffect(potionID, 20 * (3 + rand.nextInt(10)), 1 + rand.nextInt(3)));
@@ -56,7 +59,7 @@ public class EntityLapisGolem extends GolemBase
 	@Override
 	protected void applyAttributes() 
 	{
-	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
+	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.LAPIS.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 	}
 	

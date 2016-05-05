@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.golems.entity.ai.EntityAIDefendAgainstMonsters;
-import com.golems.main.GolemItems;
 import com.golems.main.ExtraGolems;
+import com.golems.main.GolemItems;
 import com.google.common.base.Predicate;
 
 import net.minecraft.block.Block;
@@ -23,6 +23,7 @@ import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -61,12 +62,12 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	Village villageObj;
 	/** deincrements, and a distance-to-home check is done at 0 */
 	private int homeCheckTimer = 70;
-	
+
 	// customizable variables with default values //
 	protected double knockbackY = 0.4000000059604645D;
 	protected boolean takesFallDamage = false;
 	protected boolean isLeashable = true;
-	
+
 	/////////////// CONSTRUCTORS /////////////////
 
 	/* Private to force child classes to use other constructors */
@@ -75,8 +76,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 		super(world);
 		this.setSize(1.4F, 2.9F);
 		this.setCanTakeFallDamage(false);
-		/** set avoids water to true */
-		((PathNavigateGround)this.getNavigator()).setCanSwim(false);
+		this.setCanSwim(false);
 	}
 
 	public GolemBase(World world, float attack, ItemStack pickBlock)
@@ -86,7 +86,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 		this.setBaseAttackDamage(attack);
 		this.experienceValue = 4 + rand.nextInt((int)this.getBaseAttackDamage() + 2);
 	}
-	
+
 	public GolemBase(World world, float attack, Block pickBlock)
 	{
 		this(world, attack, new ItemStack(pickBlock, 1, 0));
@@ -103,35 +103,36 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	protected void initEntityAI()
 	{
 		this.tasks.addTask(1, new EntityAIAttackMelee(this, this.getBaseMoveSpeed() * 4.0D, true));
-        this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, this.getBaseMoveSpeed() * 3.75D, 32.0F));
-        this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, this.getBaseMoveSpeed() * 2.25D, true));
-        this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, this.getBaseMoveSpeed() * 4.0D));
-        this.tasks.addTask(5, new EntityAIWander(this, this.getBaseMoveSpeed() * 2.25D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIDefendAgainstMonsters(this));
-        this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityLiving.class, 10, false, true, new Predicate<EntityLiving>()
-        {
-            public boolean apply(EntityLiving e)
-            {
-                return e != null && IMob.VISIBLE_MOB_SELECTOR.apply(e) && !(e instanceof EntityCreeper);
-            }
-        }));
+		this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, this.getBaseMoveSpeed() * 3.75D, 32.0F));
+		this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, this.getBaseMoveSpeed() * 2.25D, true));
+		this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, this.getBaseMoveSpeed() * 4.0D));
+		this.tasks.addTask(5, new EntityAIWander(this, this.getBaseMoveSpeed() * 2.25D));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIDefendAgainstMonsters(this));
+		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
+		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityLiving.class, 10, false, true, new Predicate<EntityLiving>()
+		{
+			public boolean apply(EntityLiving e)
+			{
+				return e != null && IMob.VISIBLE_MOB_SELECTOR.apply(e) && !(e instanceof EntityCreeper);
+			}
+		}));
 	}
-	
+
 	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.applyTexture();
+		this.setTextureType(this.applyTexture());
 	}
-	
+
 	@Override
 	protected void applyEntityAttributes() 
 	{
 		super.applyEntityAttributes();
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
 		this.applyAttributes();
 	}
 
@@ -171,17 +172,17 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 
 	@Override
 	public boolean canBeLeashedTo(EntityPlayer player)
-    {
-        return this.isLeashable && super.canBeLeashedTo(player);
-    }
+	{
+		return this.isLeashable && super.canBeLeashedTo(player);
+	}
 
 	@Override
 	protected void collideWithEntity(Entity entityIn)
 	{
 		if (entityIn instanceof IMob && !(entityIn instanceof EntityCreeper) && this.getRNG().nextInt(20) == 0)
-        {
-            this.setAttackTarget((EntityLivingBase)entityIn);
-        }
+		{
+			this.setAttackTarget((EntityLivingBase)entityIn);
+		}
 
 		super.collideWithEntity(entityIn);
 	}
@@ -218,26 +219,26 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	 */
 	@Override
 	public boolean canAttackClass(Class <? extends EntityLivingBase > cls)
-    {
-        return this.isPlayerCreated() && EntityPlayer.class.isAssignableFrom(cls) ? false : (cls == EntityCreeper.class ? false : super.canAttackClass(cls));
-    }
+	{
+		return this.isPlayerCreated() && EntityPlayer.class.isAssignableFrom(cls) ? false : (cls == EntityCreeper.class ? false : super.canAttackClass(cls));
+	}
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity)
 	{
 		if(!(entity instanceof EntityLivingBase)) return super.attackEntityAsMob(entity);
-			
+
 		// (0.0 ~ 1.0] lower number results in less variance
 		final float VARIANCE = 0.8F; 
 		// calculate damage based on base attack damage and variance
 		float baseAttack = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		float damage = baseAttack + (float)(rand.nextDouble() - 0.5D) * VARIANCE * baseAttack;
-		
+
 		// calculate luck and unluck to possibly increase or decrease damage
 		int myLuck = this.getActivePotionEffect(MobEffects.luck) != null ? 10 : 0;
 		int myUnluck = this.getActivePotionEffect(MobEffects.unluck) != null ? 10 : 0;
 		int unluck = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.unluck) != null ? 10 : 0;
-		
+
 		// percent chance of multiplying damage
 		final float CRITICAL_CHANCE = 5 + myLuck + unluck - myUnluck; 
 		// try to increase damage if random critical chance succeeds
@@ -293,6 +294,12 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 		{
 			super.fall(distance, damageMultiplier);
 		}
+	}
+	
+	@Override
+	public int getMaxFallHeight()
+	{
+		return this.canTakeFallDamage() ? super.getMaxFallHeight() : 64;
 	}
 
 	/**
@@ -377,22 +384,33 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 			}
 		}
 	}
-
-	protected boolean addGuaranteedDropEntry(List<WeightedRandomChestContent> list, ItemStack in)
+	/** 
+	 * Adds an ItemStack to the list of WeightedRandomChestContent drops by parsing the ItemStack metadata and stack size.
+	 * It passes 100% as the percentChance to drop that ItemStack.
+	 * @see #addDropEntry(dropList, item, meta, minAmount, maxAmount, percentChance)
+	 **/
+	public boolean addGuaranteedDropEntry(List<WeightedRandomChestContent> list, ItemStack in)
 	{
 		return addDropEntry(list, in.getItem(), in.getItemDamage(), in.stackSize, in.stackSize, 100);
 	}
 
-	protected boolean addDropEntry(List<WeightedRandomChestContent> list, Block in, int meta, int minAmount, int maxAmount, int percentChance)
+	/** Adds a WeightedRandomChestContent to the list of drops passed in using the item, metadata, minAmount, maxAmount, and percentChance **/
+	public boolean addDropEntry(List<WeightedRandomChestContent> list, Block in, int meta, int minAmount, int maxAmount, int percentChance)
 	{
 		return addDropEntry(list, Item.getItemFromBlock(in), meta, minAmount, maxAmount, percentChance);
 	}
 
-	protected boolean addDropEntry(List<WeightedRandomChestContent> list, Item in, int meta, int minAmount, int maxAmount, int percentChance)
+	/** Adds a WeightedRandomChestContent to the list of drops passed in using the item, metadata, minAmount, maxAmount, and percentChance **/
+	public boolean addDropEntry(List<WeightedRandomChestContent> list, Item in, int meta, int minAmount, int maxAmount, int percentChance)
 	{
-		return list.add(new WeightedRandomChestContent(in, meta, minAmount, maxAmount, percentChance));
+		return in != null ? list.add(new WeightedRandomChestContent(in, meta, minAmount, maxAmount, percentChance)) : false;
 	}
 
+	/** 
+	 * Iterates through a list of drops and removes any entries that contain the given item and metadata.
+	 * Useful for removing the default drops, which include redstone, yellow flowers, and red flowers.
+	 * Pass {@code OreDictionary.WILDCARD_VALUE} to ignore metadata.
+	 **/
 	protected boolean removeDropEntry(List<WeightedRandomChestContent> list, Item in, int meta)
 	{
 		boolean flag = false;
@@ -423,7 +441,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	{
 		this.setCreativeReturn(new ItemStack(blockToReturn, 1));
 	}
-	
+
 	public void setCreativeReturn(ItemStack blockToReturn)
 	{
 		this.creativeReturn = blockToReturn;
@@ -444,7 +462,7 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	{
 		return (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue();
 	}
-	
+
 	public double getBaseMoveSpeed()
 	{
 		return this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
@@ -463,6 +481,20 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	public boolean canTakeFallDamage()
 	{
 		return this.takesFallDamage;
+	}
+	
+	public void setCanSwim(boolean canSwim)
+	{
+		if(canSwim)
+		{
+			((PathNavigateGround)this.getNavigator()).setCanSwim(false);
+			this.tasks.addTask(0, new EntityAISwimming(this));
+		}
+		else
+		{
+			((PathNavigateGround)this.getNavigator()).setCanSwim(true);
+			this.tasks.removeTask(new EntityAISwimming(this));
+		}
 	}
 
 	public void setPlayerCreated(boolean bool)
@@ -483,17 +515,18 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 
 	/////////////// TEXTURE HELPERS //////////////////
 
-	/** Gets texture using modid 'golems' **/
-	public static ResourceLocation getGolemTexture(String texture)
+	/** Makes a texture on the assumption that MODID is 'golems' **/
+	public static ResourceLocation makeGolemTexture(String texture)
 	{
-		return getGolemTexture(ExtraGolems.MODID, texture);
+		return makeGolemTexture(ExtraGolems.MODID, texture);
 	}
 
 	/** 
 	 * Makes a ResourceLocation using the passed mod id and part of the texture name.
-	 * Texture should be at 'assets/{@link MODID}/textures/entity/golem_{@link texture}.png'
+	 * Texture should be at 'assets/<b>MODID</b>/textures/entity/golem_<b>suffix</b>.png'
+	 * @see {@link #applyTexture()}
 	 **/
-	public static ResourceLocation getGolemTexture(final String MODID, String texture)
+	public static ResourceLocation makeGolemTexture(final String MODID, String texture)
 	{
 		return new ResourceLocation(MODID + ":textures/entity/golem_" + texture + ".png");
 	}
@@ -532,26 +565,32 @@ public abstract class GolemBase extends EntityCreature implements IAnimals
 	////////////////////////////////////////////////////////////
 	// Override ALL OF THE FOLLOWING FUNCTIONS FOR EACH GOLEM //
 	////////////////////////////////////////////////////////////
-	
-	/** The sound to play when attacking, walking, hurt, and on death **/
-	public abstract SoundEvent getGolemSound();
 
 	/** Called from applyEntityAttributes. Use this to adjust health, speed, knockback resistance, etc. **/
 	protected abstract void applyAttributes();
 
-	/** Called from entityInit. Call this.setTextureType in here somewhere. 
-	 * Example implementation:
-	 * 
-	 * protected void applyTexture()
+	/**
+	 * Called from {@code entityInit} and used to set the texture type
+	 * <b>before</b> the entity is constructed or rendered.
+	 * Example implementation: texture is at 'assets/golems/textures/entity/golem_clay.png'
+	 * <pre>{@code
+	 * protected ResourceLocation applyTexture()
 	 * {
-	 * 		this.setTextureType(this.getGolemTexture("texture_suffix")) 
-	 * } 
+	 * 	return this.makeGolemTexture("golems", "clay"); 
+	 * }</pre>
+	 * @return a ResourceLocation for this golem's texture
 	 **/
-	protected abstract void applyTexture();
+	protected abstract ResourceLocation applyTexture();
 
 	/** 
 	 * Called each time a golem dies. Passes a list of drops already containing some defaults.
-	 * Add entries using GolemBase.addDropEntry and GolemBase.addGuaranteedDropEntry 
+	 * You can add entries using
+	 * {@link #addDropEntry(dropList, item, meta, minAmount, maxAmount, percentChance)}.
+	 * You can skip the percentChance part (assume 100% chance) by using 
+	 * {@link #addGuaranteedDropEntry(dropList, itemStack)} 
 	 **/
 	public abstract void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel);
+
+	/** @return A SoundEvent to play when the golem is attacking, walking, hurt, and on death **/
+	public abstract SoundEvent getGolemSound();
 }

@@ -20,19 +20,21 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class EntityLeafGolem extends GolemColorized 
 {
-	private static final ResourceLocation TEXTURE_BASE = GolemBase.getGolemTexture("leaves");
-	private static final ResourceLocation TEXTURE_OVERLAY = GolemBase.getGolemTexture("leaves_grayscale");
+	public static final String ALLOW_SPECIAL = "Allow Special: Regeneration";
+	
+	private static final ResourceLocation TEXTURE_BASE = GolemBase.makeGolemTexture("leaves");
+	private static final ResourceLocation TEXTURE_OVERLAY = GolemBase.makeGolemTexture("leaves_grayscale");
 
 	public EntityLeafGolem(World world)
 	{
-		super(world, 0.5F, new ItemStack(Blocks.leaves), 0x5F904A, TEXTURE_BASE, TEXTURE_OVERLAY);
-		this.tasks.addTask(0, new EntityAISwimming(this));
+		super(world, Config.LEAF.getBaseAttack(), new ItemStack(Blocks.leaves), 0x5F904A, TEXTURE_BASE, TEXTURE_OVERLAY);
+		this.setCanSwim(true);
 	}
 	
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.LEAF.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.31D);
 	}
 	
@@ -44,7 +46,7 @@ public class EntityLeafGolem extends GolemColorized
 	public void onLivingUpdate()
 	{
 		super.onLivingUpdate();
-		if(Config.ALLOW_LEAF_SPECIAL && this.getActivePotionEffect(MobEffects.regeneration) == null && rand.nextInt(40) == 0)
+		if(Config.LEAF.getBoolean(ALLOW_SPECIAL) && this.getActivePotionEffect(MobEffects.regeneration) == null && rand.nextInt(40) == 0)
 		{
 			this.addPotionEffect(new PotionEffect(MobEffects.regeneration, 200 + 20 * (1 + rand.nextInt(8)), 1));
 		}

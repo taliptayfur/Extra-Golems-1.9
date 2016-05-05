@@ -15,12 +15,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
 public class EntityTNTGolem extends GolemBase 
 {	
+	public static final String ALLOW_SPECIAL = "Allow Special: Explode";
+	
 	protected final int MIN_EXPLOSION_RAD;
 	protected final int MAX_EXPLOSION_RAD;
 	protected final int FUSE_LEN;
@@ -35,7 +38,7 @@ public class EntityTNTGolem extends GolemBase
 	/** Default constructor for TNT golem **/
 	public EntityTNTGolem(World world) 
 	{
-		this(world, 2.5F, Blocks.tnt, 3, 6, 50, 10, Config.ALLOW_TNT_SPECIAL);
+		this(world, 2.5F, Blocks.tnt, 3, 6, 50, 10, Config.TNT.getBoolean(ALLOW_SPECIAL));
 	}
 	
 	/**
@@ -53,9 +56,9 @@ public class EntityTNTGolem extends GolemBase
 	}
 
 	@Override
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("tnt"));
+		return this.makeGolemTexture("tnt");
 	}
 
 	/**

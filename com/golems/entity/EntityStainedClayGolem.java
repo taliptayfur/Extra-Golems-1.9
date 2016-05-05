@@ -16,25 +16,28 @@ import net.minecraft.world.World;
 
 public class EntityStainedClayGolem extends GolemColorizedMultiTextured
 {
-	private static final ResourceLocation TEXTURE_BASE = GolemBase.getGolemTexture("stained_clay");
-	private static final ResourceLocation TEXTURE_OVERLAY = GolemBase.getGolemTexture("stained_clay_grayscale");
+	public static final String DROP_META = "Drop Metadata";
+	
+	private static final ResourceLocation TEXTURE_BASE = GolemBase.makeGolemTexture("stained_clay");
+	private static final ResourceLocation TEXTURE_OVERLAY = GolemBase.makeGolemTexture("stained_clay_grayscale");
 	
 	public EntityStainedClayGolem(World world)
 	{
-		super(world, 3.0F, Blocks.stained_hardened_clay, TEXTURE_BASE, TEXTURE_OVERLAY, ItemDye.dyeColors);
+		super(world, Config.STAINED_CLAY.getBaseAttack(), Blocks.stained_hardened_clay, TEXTURE_BASE, TEXTURE_OVERLAY, ItemDye.dyeColors);
 	}
 	
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(26.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.STAINED_CLAY.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20D);
 	}
 	
 	@Override
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
-		int meta = Config.TWEAK_STAINED_CLAY < 0 ? 15 - this.getTextureNum() : Config.TWEAK_STAINED_CLAY;
+		int keyReturn = Config.STAINED_CLAY.getInt(DROP_META);
+		int meta = keyReturn < 0 ? 15 - this.getTextureNum() : keyReturn;
 		int size = 1 + lootingLevel + rand.nextInt(3);
 		this.addGuaranteedDropEntry(dropList, new ItemStack(Blocks.stained_hardened_clay, size > 4 ? 4 : size, meta));
 	}

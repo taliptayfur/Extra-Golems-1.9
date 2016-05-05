@@ -18,7 +18,10 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 
 public class EntityMushroomGolem extends GolemMultiTextured
-{			
+{	
+	public static final String ALLOW_SPECIAL = "Allow Special: Plant Mushrooms";
+	public static final String FREQUENCY = "Mushroom Frequency";
+	
 	public static final String shroomPrefix = "shroom";
 	public static final String[] shroomTypes = {"red","brown"};
 	public final IBlockState[] mushrooms = {Blocks.brown_mushroom.getDefaultState(), Blocks.red_mushroom.getDefaultState()};
@@ -26,9 +29,11 @@ public class EntityMushroomGolem extends GolemMultiTextured
 
 	public EntityMushroomGolem(World world) 
 	{
-		super(world, 3.0F, Blocks.red_mushroom_block, shroomPrefix, shroomTypes);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIPlaceRandomBlocks(this, Config.TWEAK_MUSHROOM, mushrooms, soils, Config.ALLOW_MUSHROOM_SPECIAL));
+		super(world, Config.MUSHROOM.getBaseAttack(), Blocks.red_mushroom_block, shroomPrefix, shroomTypes);
+		this.setCanSwim(true);
+		int freq = Config.MUSHROOM.getInt(FREQUENCY);
+		boolean allowed = Config.MUSHROOM.getBoolean(ALLOW_SPECIAL);
+		this.tasks.addTask(2, new EntityAIPlaceRandomBlocks(this, freq, mushrooms, soils, allowed));
 	}
 	
 	@Override
@@ -40,7 +45,7 @@ public class EntityMushroomGolem extends GolemMultiTextured
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.MUSHROOM.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30D);
 	}
 

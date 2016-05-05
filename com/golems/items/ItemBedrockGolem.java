@@ -33,7 +33,7 @@ public class ItemBedrockGolem extends Item
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		// creative players can use this item to spawn a bedrock golem
-		if(Config.ALLOW_BEDROCK_GOLEM && playerIn.capabilities.isCreativeMode) 
+		if(Config.BEDROCK.canSpawn() && playerIn.capabilities.isCreativeMode) 
 		{
 			GolemBase golem = new EntityBedrockGolem(worldIn);
 

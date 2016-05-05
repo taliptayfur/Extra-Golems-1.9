@@ -8,7 +8,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemDye;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -18,19 +17,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityStainedGlassGolem extends GolemColorizedMultiTextured
 {
-	private static final ResourceLocation TEXTURE_BASE = GolemBase.getGolemTexture("stained_glass");
-	private static final ResourceLocation TEXTURE_OVERLAY = GolemBase.getGolemTexture("stained_glass_grayscale");
+	public static final String DROP_META = "Drop Metadata";
+	
+	private static final ResourceLocation TEXTURE_BASE = GolemBase.makeGolemTexture("stained_glass");
+	private static final ResourceLocation TEXTURE_OVERLAY = GolemBase.makeGolemTexture("stained_glass_grayscale");
 	
 	public EntityStainedGlassGolem(World world)
 	{
-		super(world, 12.0F, Blocks.stained_glass, TEXTURE_BASE, TEXTURE_OVERLAY, ItemDye.dyeColors);
+		super(world, Config.STAINED_GLASS.getBaseAttack(), Blocks.stained_glass, TEXTURE_BASE, TEXTURE_OVERLAY, ItemDye.dyeColors);
 		this.setCanTakeFallDamage(true);
 	}
 	
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(9.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.STAINED_GLASS.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30D);
 	}
 	
@@ -48,7 +49,8 @@ public class EntityStainedGlassGolem extends GolemColorizedMultiTextured
 	@Override
 	public void addGolemDrops(List<WeightedRandomChestContent> dropList, boolean recentlyHit, int lootingLevel)
 	{
-		int meta = Config.TWEAK_STAINED_GLASS < 0 ? 15 - this.getTextureNum() : Config.TWEAK_STAINED_GLASS;
+		int keyReturn = Config.STAINED_GLASS.getInt(DROP_META);
+		int meta = keyReturn < 0 ? 15 - this.getTextureNum() : keyReturn;
 		int size = lootingLevel + rand.nextInt(3 + lootingLevel);
 		this.addDropEntry(dropList, Blocks.stained_glass, meta, 0, size > 4 ? 4 : size, 50 + lootingLevel * 10);
 		this.addDropEntry(dropList, Blocks.stained_glass_pane, meta, 1, 5 + lootingLevel, 80 + lootingLevel * 10);

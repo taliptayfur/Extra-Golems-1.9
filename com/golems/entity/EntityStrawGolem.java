@@ -2,12 +2,15 @@ package com.golems.entity;
 
 import java.util.List;
 
+import com.golems.main.Config;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
@@ -16,19 +19,19 @@ public class EntityStrawGolem extends GolemBase
 {			
 	public EntityStrawGolem(World world) 
 	{
-		super(world, 1.0F, Blocks.hay_block);
-		this.tasks.addTask(0, new EntityAISwimming(this));
+		super(world, Config.STRAW.getBaseAttack(), Blocks.hay_block);
+		this.setCanSwim(true);
 	}
 	
-	protected void applyTexture()
+	protected ResourceLocation applyTexture()
 	{
-		this.setTextureType(this.getGolemTexture("straw"));
+		return this.makeGolemTexture("straw");
 	}
 		
 	@Override
 	protected void applyAttributes() 
 	{
-	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+	 	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.STRAW.getMaxHealth());
 	  	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
 	}
 	

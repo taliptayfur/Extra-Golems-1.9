@@ -2,6 +2,7 @@ package com.golems.entity;
 
 import java.util.List;
 
+import com.golems.main.Config;
 import com.golems.main.ExtraGolems;
 
 import net.minecraft.block.Block;
@@ -24,9 +25,8 @@ public class EntityWoodenGolem extends GolemMultiTextured
 
 	public EntityWoodenGolem(World world) 
 	{
-		super(world, 3.0F, new ItemStack(Blocks.log), woodPrefix, woodTypes);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		((PathNavigateGround)this.getNavigator()).setCanSwim(true);
+		super(world, Config.WOOD.getBaseAttack(), new ItemStack(Blocks.log), woodPrefix, woodTypes);
+		this.setCanSwim(true);
 	}	
 	
 	@Override
@@ -52,7 +52,7 @@ public class EntityWoodenGolem extends GolemMultiTextured
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.WOOD.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30D);
 	}
 

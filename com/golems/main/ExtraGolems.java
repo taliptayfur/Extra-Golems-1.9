@@ -6,7 +6,6 @@ import com.golems.proxies.CommonProxy;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,7 +24,7 @@ public class ExtraGolems
 {	
 	public static final String MODID = "golems";
 	public static final String NAME = "Extra Golems";
-	public static final String VERSION = "4.02";
+	public static final String VERSION = "4.03";
 	public static final String MCVERSION = "1.9";
 	
 	@SidedProxy(clientSide = "com." + MODID + ".proxies.ClientProxy", serverSide = "com." + MODID + ".proxies.CommonProxy")

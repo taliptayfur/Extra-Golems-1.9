@@ -6,7 +6,6 @@ import com.golems.entity.GolemColorized;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -93,6 +92,6 @@ public class RenderColoredGolem extends RenderLiving<GolemColorized>
 	 */
 	protected ResourceLocation getEntityTexture(GolemColorized golem)
 	{
-		return this.texture != null ? this.texture : GolemBase.getGolemTexture("clay");
+		return this.texture != null ? this.texture : GolemBase.makeGolemTexture("clay");
 	}
 }

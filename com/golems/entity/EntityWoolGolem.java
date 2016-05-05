@@ -2,6 +2,7 @@ package com.golems.entity;
 
 import java.util.List;
 
+import com.golems.main.Config;
 import com.golems.main.ExtraGolems;
 
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -22,9 +23,8 @@ public class EntityWoolGolem extends GolemMultiTextured
 
 	public EntityWoolGolem(World world) 
 	{
-		super(world, 1.0F, new ItemStack(Blocks.wool), woolPrefix, coloredWoolTypes);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		((PathNavigateGround)this.getNavigator()).setCanSwim(true);
+		super(world, Config.WOOL.getBaseAttack(), new ItemStack(Blocks.wool), woolPrefix, coloredWoolTypes);
+		this.setCanSwim(true);
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class EntityWoolGolem extends GolemMultiTextured
 	@Override
 	protected void applyAttributes() 
 	{
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.WOOL.getMaxHealth());
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30D);
 	}
 
