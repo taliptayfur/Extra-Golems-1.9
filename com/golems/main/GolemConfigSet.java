@@ -38,7 +38,6 @@ public class GolemConfigSet
 
 	public GolemConfigSet loadFromConfig()
 	{
-		this.config.load();
 		String category = this.getCategory();
 		boolean spawn = config.getBoolean("Allow Golem", category, true, 
 				"Whether the " + golemName + " can be built");
@@ -49,35 +48,28 @@ public class GolemConfigSet
 		this.setCanSpawn(spawn);
 		this.setMaxHealth(health);
 		this.setBaseAttack(attack);
-		this.config.save();
 		return this;
 	}
 
 	public void addKey(String key, int defaultValue, int min, int max, String comment)
 	{
-		this.config.load();
 		String category = this.getCategory();
 		int value = config.getInt(key, category, defaultValue, min, max, comment);
 		this.keys.put(key, new Integer(value));
-		this.config.save();
 	}
 
 	public void addKey(String key, float defaultValue, float min, float max, String comment)
 	{
-		this.config.load();
 		String category = this.getCategory();
 		float value = config.getFloat(key, category, defaultValue, min, max, comment);
 		this.keys.put(key, new Float(value));
-		this.config.save();
 	}
 
 	public void addKey(String key, boolean defaultValue, String comment)
 	{
-		this.config.load();
 		String category = this.getCategory();
 		boolean value = config.getBoolean(key, category, defaultValue, comment);
 		this.keys.put(key, new Boolean(value));
-		this.config.save();
 	}
 
 	public int getInt(String key)

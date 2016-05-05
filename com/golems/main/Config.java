@@ -43,7 +43,7 @@ import net.minecraftforge.common.config.Configuration;
 /** Registers the config settings to adjust aspects of this mod **/
 public class Config 
 {
-	public static Map<Class<? extends GolemBase>, GolemConfigSet> configMap;
+	// public static Map<Class<? extends GolemBase>, GolemConfigSet> configMap;
 	
 	public static GolemConfigSet BEDROCK;
 	public static GolemConfigSet BOOKSHELF;
@@ -78,40 +78,13 @@ public class Config
 	public static GolemConfigSet TNT;
 	public static GolemConfigSet WOOD;
 	public static GolemConfigSet WOOL;
-	/*
-	public static final String KEY_BOOKSHELF_SPECIAL = "Allow Special: Potion Effects";
-	public static final String KEY_COAL_SPECIAL = "Allow Special: Blindness";
-	public static final String KEY_ENDSTONE_SPECIAL = "Allow Special: Teleporting";
-	public static final String KEY_ICE_SPECIAL = "Allow Special: Freeze Blocks";
-	public static final String KEY_LAPIS_SPECIAL = "Allow Special: Potion Effects";
-	public static final String KEY_LEAF_SPECIAL = "Allow Special: Regeneration";
-	public static final String KEY_MELON_SPECIAL = "Allow Special: Plant Flowers";
-	public static final String KEY_MUSHROOM_SPECIAL = "Allow Special: Plant Mushrooms";
-	public static final String KEY_NETHERBRICK_LAVA_SPECIAL = "Allow Special: Melt Cobblestone";
-	public static final String KEY_NETHERBRICK_FIRE_SPECIAL = "Allow Special: Burn Enemies";
-	public static final String KEY_REDSTONE_SPECIAL = "Allow Special: Redstone Power";
-	public static final String KEY_SLIME_SPECIAL = "Allow Special: Extra Knockback";
-	public static final String KEY_SPONGE_SPECIAL = "Allow Special: Absorb Water";
-	public static final String KEY_TNT_SPECIAL = "Allow Special: Explode";
-	
-	public static final String KEY_SPONGE_PARTICLES = "Can Render Sponge Particles";
-	public static final String KEY_ENDSTONE_WATER_HURT = "Can Take Water Damage";
-	public static final String KEY_MELON_FREQUENCY = "Flower Frequency";
-	public static final String KEY_MUSHROOM_FREQUENCY = "Mushroom Frequency";
-	public static final String KEY_NETHERBRICK_DELAY = "Melting Delay";
-	public static final String KEY_REDSTONE_POWER = "Redstone Power Level";
-	public static final String KEY_SLIME_KNOCKBACK = "Knockback Factor";
-	public static final String KEY_SPONGE_INTERVAL = "Water Soaking Frequency";
-	public static final String KEY_SPONGE_RANGE = "Water Soaking Range";
-	public static final String KEY_STAINED_CLAY_DROPS = "Drop Metadata";
-	public static final String KEY_STAINED_GLASS_DROPS = "Drop Metadata";
-	
-	public static final String KEY_USE_REGULAR_ICE = "Can Use Regular Ice";
-	*/
+
 	public static void mainRegistry(Configuration config)
 	{
+		config.load();
 		initGolemConfigSets(config);
 		loadSpecials();
+		config.save();
 	}
 	
 	/** Now I can change default attack and health values all from one place **/
@@ -179,6 +152,7 @@ public class Config
 		SPONGE.addKey(EntitySpongeGolem.INTERVAL, 1, 1, 24000, "Number of ticks between each water-check; increase to reduce lag");
 		STAINED_CLAY.addKey(EntityStainedClayGolem.DROP_META, -1, -1, 15, "The metadata of stained clay dropped by this golem. Set to -1 to let it be based on current texture");
 		STAINED_GLASS.addKey(EntityStainedGlassGolem.DROP_META, -1, -1, 15, "The metadata of stained glass dropped by this golem. Set to -1 to let it be based on current texture");
+		TNT.addKey(EntityTNTGolem.ALLOW_SPECIAL, true, "Whether this golem can explode when fighting or dying");
 	}
 /*
 	private static void registerConfigSets()
